@@ -215,19 +215,19 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-service-foundation`
+- [x] `add-service-foundation`
 
 Tasks:
 
-- [ ] Define service module layout convention.
-- [ ] Add config loading pattern.
-- [ ] Add validation pipe pattern.
-- [ ] Add structured logger pattern.
-- [ ] Add correlation ID middleware.
-- [ ] Add health endpoint pattern.
-- [ ] Add global error response format.
-- [ ] Add testing utilities library.
-- [ ] Document service folder structure.
+- [x] Define service module layout convention.
+- [x] Add config loading pattern.
+- [x] Add validation pipe pattern.
+- [x] Add structured logger pattern.
+- [x] Add correlation ID middleware.
+- [x] Add health endpoint pattern.
+- [x] Add global error response format.
+- [x] Add testing utilities library.
+- [x] Document service folder structure.
 
 Exit criteria:
 
@@ -804,7 +804,7 @@ Do not:
 | 1 | Monorepo and Local Infrastructure | ✅ Complete |
 | 2 | Shared Kernel | ✅ Complete |
 | 3 | Contracts and Messaging Foundation | In progress |
-| 4 | Application Foundation | Not started |
+| 4 | Application Foundation | ✅ Complete |
 | 5 | Auth Service | Not started |
 | 6 | Employee Service | Not started |
 | 7 | Payroll Service | Not started |

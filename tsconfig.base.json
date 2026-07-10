@@ -15,12 +15,12 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@payroll/shared-kernel": ["libs/shared-kernel/src/index.ts"],
       "@payroll/contracts": ["libs/contracts/src/index.ts"],
       "@payroll/event-bus": ["libs/event-bus/src/index.ts"],
-      "@payroll/testing": ["libs/testing/src/index.ts"]
+      "@payroll/shared-kernel": ["libs/shared-kernel/src/index.ts"],
+      "@payroll/testing": ["libs/testing/src/index.ts"],
+      "@payroll/service-foundation": ["libs/service-foundation/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"]
 }
-
