@@ -135,23 +135,23 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-shared-kernel`
+- [x] `add-shared-kernel`
 
 Tasks:
 
 - [x] Create `libs/shared-kernel`.
 - [x] Implement `Entity`.
-- [ ] Implement `AggregateRoot`.
+- [x] Implement `AggregateRoot`.
 - [x] Implement `ValueObject`.
 - [x] Implement `DomainEvent`.
-- [ ] Implement base ID value objects.
-- [ ] Implement `CompanyId`.
-- [ ] Implement `Money`.
-- [ ] Implement domain error base classes.
-- [ ] Implement optimistic version support.
-- [ ] Add unit tests for equality behavior.
-- [ ] Add unit tests for domain event recording.
-- [ ] Add unit tests for Money invariants.
+- [x] Implement base ID value objects (`Id<T>`).
+- [x] Implement `CompanyId`.
+- [x] Implement `Money`.
+- [x] Implement domain error base classes (`DomainError`, `ValidationError`, `NotFoundError`).
+- [x] Implement optimistic version support (`assertVersion` on `AggregateRoot`).
+- [x] Add unit tests for equality behavior.
+- [x] Add unit tests for domain event recording.
+- [x] Add unit tests for Money invariants.
 
 Exit criteria:
 
@@ -740,8 +740,8 @@ Immediate next tasks:
 - [x] Initialize OpenSpec baseline.
 - [x] Create Nx workspace.
 - [x] Add Docker Compose infrastructure.
-- [ ] Add shared-kernel spec.
-- [ ] Implement shared-kernel with tests.
+- [x] Add shared-kernel spec.
+- [x] Implement shared-kernel with tests.
 
 ---
 
@@ -802,7 +802,7 @@ Do not:
 | --- | --- | --- |
 | 0 | Repository Readiness | ✅ Complete |
 | 1 | Monorepo and Local Infrastructure | ✅ Complete |
-| 2 | Shared Kernel | In progress |
+| 2 | Shared Kernel | ✅ Complete |
 | 3 | Contracts and Messaging Foundation | In progress |
 | 4 | Application Foundation | Not started |
 | 5 | Auth Service | Not started |
