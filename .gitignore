@@ -42,6 +42,9 @@ docker-data/
 # pnpm store (local)
 .pnpm-home/
 
+# Tooling artifacts
+.atl/
+
 # Test artifacts
 test-results/
 playwright-report/
