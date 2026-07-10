@@ -28,8 +28,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        run: npm install -g pnpm@9.15.4
+
       - name: Install dependencies
-        run: npx pnpm@9.15.4 install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -76,8 +79,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        run: npm install -g pnpm@9.15.4
+
       - name: Install dependencies
-        run: npx pnpm@9.15.4 install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
