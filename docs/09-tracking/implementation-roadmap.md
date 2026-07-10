@@ -175,23 +175,23 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-event-contracts`
-- [ ] `add-event-bus-abstractions`
+- [x] `add-event-contracts`
+- [x] `add-event-bus-abstractions`
 
 Tasks:
 
 - [x] Create `libs/contracts`.
 - [x] Define event envelope contract.
 - [x] Define core payroll event names.
-- [ ] Define identity event contracts.
-- [ ] Define employee event contracts.
-- [ ] Define notification event contracts.
-- [ ] Add event version constants.
+- [x] Define identity event contracts.
+- [x] Define employee event contracts.
+- [x] Define notification event contracts.
+- [x] Add event version constants.
 - [x] Create `libs/event-bus`.
 - [x] Define event publisher port.
 - [x] Define event consumer handler port.
-- [ ] Define serialization/deserialization contracts.
-- [ ] Add contract tests for event envelope validation.
+- [x] Define serialization/deserialization contracts.
+- [x] Add contract tests for event envelope validation.
 
 Exit criteria:
 
