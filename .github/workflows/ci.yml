@@ -1,0 +1,86 @@
+# CI Pipeline — Payroll Monorepo
+#
+# Build, lint, test, and integration-check every push and PR.
+#
+# Prerequisites:
+#   pnpm is NOT globally installed on the runner. We use `npx pnpm@9.15.4` to
+#   install it on demand. This adds ~5 s to the install step but avoids the
+#   maintenance burden of keeping pnpm in the runner image.
+#
+# Integration environment:
+#   The `integration` job starts PostgreSQL, MongoDB, Redis, and Kafka via
+#   `services:` containers. This requires a runner with sufficient RAM — GitHub
+#   free runners (7 GB) may OOM Kafka 3.7 at default heap.
+#   See docs/07-deployment/docker.md for local integration testing instructions.
+#   To enable on a self-hosted or paid runner, remove the `if:` gate below.
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npx pnpm@9.15.4 install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test (unit)
+        run: pnpm test
+
+  integration:
+    runs-on: ubuntu-latest
+    # ── Known limitation ──────────────────────────────────────────────────
+    # GitHub free runners (7 GB RAM) may OOM Kafka at default heap settings.
+    # This job is designed for paid or self-hosted runners. Before enabling,
+    # verify the runner has >= 8 GB available memory.
+    # For local integration testing, run `docker compose up` first.
+    # ──────────────────────────────────────────────────────────────────────
+    if: false
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+      kafka:
+        image: apache/kafka:3.7.0
+        ports:
+          - 9092:9092
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npx pnpm@9.15.4 install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Integration tests
+        run: pnpm test
