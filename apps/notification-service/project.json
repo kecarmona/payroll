@@ -23,6 +23,13 @@
       "options": {
         "jestConfig": "apps/notification-service/jest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/notification-service/src/**/*.ts", "apps/notification-service/test/**/*.ts"]
+      }
     }
   }
 }

@@ -11,6 +11,13 @@
         "main": "libs/testing/src/index.ts",
         "tsConfig": "libs/testing/tsconfig.lib.json"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/testing/src/**/*.ts"]
+      }
     }
   }
 }

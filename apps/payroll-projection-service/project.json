@@ -23,6 +23,13 @@
       "options": {
         "jestConfig": "apps/payroll-projection-service/jest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/payroll-projection-service/src/**/*.ts", "apps/payroll-projection-service/test/**/*.ts"]
+      }
     }
   }
 }

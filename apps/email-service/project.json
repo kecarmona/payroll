@@ -23,6 +23,13 @@
       "options": {
         "jestConfig": "apps/email-service/jest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/email-service/src/**/*.ts", "apps/email-service/test/**/*.ts"]
+      }
     }
   }
 }

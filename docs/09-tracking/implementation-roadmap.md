@@ -96,15 +96,15 @@ References:
 OpenSpec changes:
 
 - [x] `setup-monorepo`
-- [ ] `setup-local-infrastructure`
+- [x] `setup-local-infrastructure`
 
 Tasks:
 
-- [ ] Initialize Nx workspace.
-- [ ] Configure TypeScript base settings.
-- [ ] Configure ESLint.
-- [ ] Configure Prettier.
-- [ ] Configure test runner.
+- [x] Initialize Nx workspace.
+- [x] Configure TypeScript base settings.
+- [x] Configure ESLint.
+- [x] Configure Prettier.
+- [x] Configure test runner.
 - [x] Add Docker Compose.
 - [x] Add PostgreSQL service.
 - [x] Add MongoDB service.
@@ -738,8 +738,8 @@ Immediate next tasks:
 - [x] Decide package manager.
 - [x] Initialize Git repository.
 - [x] Initialize OpenSpec baseline.
-- [ ] Create Nx workspace.
-- [ ] Add Docker Compose infrastructure.
+- [x] Create Nx workspace.
+- [x] Add Docker Compose infrastructure.
 - [ ] Add shared-kernel spec.
 - [ ] Implement shared-kernel with tests.
 
@@ -750,7 +750,7 @@ Immediate next tasks:
 Suggested order:
 
 1. `setup-monorepo` ✅
-2. `setup-local-infrastructure`
+2. `setup-local-infrastructure` ✅
 3. `add-shared-kernel`
 4. `add-event-contracts`
 5. `add-service-foundation`
@@ -801,7 +801,7 @@ Do not:
 | Phase | Name | Status |
 | --- | --- | --- |
 | 0 | Repository Readiness | ✅ Complete |
-| 1 | Monorepo and Local Infrastructure | In progress |
+| 1 | Monorepo and Local Infrastructure | ✅ Complete |
 | 2 | Shared Kernel | In progress |
 | 3 | Contracts and Messaging Foundation | In progress |
 | 4 | Application Foundation | Not started |

@@ -97,7 +97,7 @@ testing:
 lint:
   tool: ESLint
   version: "8.57"
-  config: eslint.config.mjs (Nx flat config)
+  config: eslint.config.js (Nx flat config)
   command: nx run-many -t lint
 
 format:

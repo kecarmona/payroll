@@ -23,6 +23,13 @@
       "options": {
         "jestConfig": "apps/audit-service/jest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/audit-service/src/**/*.ts", "apps/audit-service/test/**/*.ts"]
+      }
     }
   }
 }

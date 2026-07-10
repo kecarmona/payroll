@@ -23,6 +23,13 @@
       "options": {
         "jestConfig": "apps/auth-service/jest.config.ts"
       }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/auth-service/src/**/*.ts", "apps/auth-service/test/**/*.ts"]
+      }
     }
   }
 }
