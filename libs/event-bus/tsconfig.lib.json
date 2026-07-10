@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/libs/event-bus",
+    "types": ["node"],
+    "baseUrl": "../../",
+    "paths": {
+      "@payroll/contracts": ["dist/libs/contracts/src/index"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}
+

@@ -1,0 +1,29 @@
+{
+  "name": "audit-service",
+  "sourceRoot": "apps/audit-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/audit-service",
+        "main": "apps/audit-service/src/main.ts",
+        "tsConfig": "apps/audit-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "audit-service:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/audit-service/jest.config.ts"
+      }
+    }
+  }
+}
+

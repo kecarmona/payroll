@@ -1,0 +1,23 @@
+{
+  "name": "contracts",
+  "sourceRoot": "libs/contracts/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/contracts",
+        "main": "libs/contracts/src/index.ts",
+        "tsConfig": "libs/contracts/tsconfig.lib.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/contracts/jest.config.ts"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,29 @@
+{
+  "name": "email-service",
+  "sourceRoot": "apps/email-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/email-service",
+        "main": "apps/email-service/src/main.ts",
+        "tsConfig": "apps/email-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "email-service:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/email-service/jest.config.ts"
+      }
+    }
+  }
+}
+

@@ -1,0 +1,29 @@
+{
+  "name": "employee-service",
+  "sourceRoot": "apps/employee-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/employee-service",
+        "main": "apps/employee-service/src/main.ts",
+        "tsConfig": "apps/employee-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "employee-service:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/employee-service/jest.config.ts"
+      }
+    }
+  }
+}
+

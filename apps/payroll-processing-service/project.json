@@ -1,0 +1,29 @@
+{
+  "name": "payroll-processing-service",
+  "sourceRoot": "apps/payroll-processing-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/payroll-processing-service",
+        "main": "apps/payroll-processing-service/src/main.ts",
+        "tsConfig": "apps/payroll-processing-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "payroll-processing-service:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/payroll-processing-service/jest.config.ts"
+      }
+    }
+  }
+}
+

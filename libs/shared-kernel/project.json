@@ -1,0 +1,23 @@
+{
+  "name": "shared-kernel",
+  "sourceRoot": "libs/shared-kernel/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared-kernel",
+        "main": "libs/shared-kernel/src/index.ts",
+        "tsConfig": "libs/shared-kernel/tsconfig.lib.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/shared-kernel/jest.config.ts"
+      }
+    }
+  }
+}
+

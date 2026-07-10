@@ -1,0 +1,819 @@
+# Implementation Roadmap
+
+Project
+
+Distributed Payroll Processing Engine
+
+---
+
+# Purpose
+
+This document tracks the implementation order for applying code from the documented architecture and OpenSpec workflow.
+
+It answers:
+
+- Where do we start?
+- What must be implemented?
+- What must be specified before coding?
+- What validates that a phase is complete?
+- Which tasks depend on previous work?
+
+---
+
+# Working Mode
+
+The project follows Specification Driven Development and TDD.
+
+For every feature or architectural capability:
+
+1. Confirm or create the OpenSpec change/spec.
+2. Define acceptance criteria.
+3. Write or update tests.
+4. Implement the minimal code.
+5. Refactor.
+6. Update documentation.
+7. Mark the task complete in this roadmap.
+
+No implementation task should begin if the corresponding spec or ADR is missing.
+
+---
+
+# Status Legend
+
+- [ ] Not started
+- [~] In progress
+- [x] Done
+- [!] Blocked
+
+---
+
+# Phase 0: Repository Readiness
+
+Goal:
+
+Prepare the repository so code can be generated, tested and evolved safely.
+
+References:
+
+- docs/README.md
+- docs/04-adr/0001-use-nx-monorepo.md
+- project_context.md
+
+Tasks:
+
+- [ ] Initialize Git repository if not already initialized.
+- [x] Add root README with project summary and local setup notes.
+- [x] Add `.gitignore` for Node, Docker, coverage and environment files.
+- [x] Add `.env.example` with required local variables.
+- [x] Add package manager decision: pnpm.
+- [x] Add root scripts for build, test, lint and format.
+- [ ] Add initial CI placeholder or document future CI plan.
+- [ ] Confirm OpenSpec folder structure and workflow.
+- [ ] Create initial OpenSpec project baseline.
+
+Exit criteria:
+
+- Repository has repeatable setup instructions.
+- Local developer can identify how to run build and tests.
+- OpenSpec workflow is ready before feature implementation.
+
+---
+
+# Phase 1: Monorepo and Local Infrastructure
+
+Goal:
+
+Create the base monorepo and local infrastructure required by all services.
+
+References:
+
+- docs/03-tdd/01-system-overview.md
+- docs/03-tdd/09-deployment.md
+- docs/07-deployment/docker.md
+- docs/04-adr/0001-use-nx-monorepo.md
+- docs/04-adr/0003-use-postgres-mongodb-redis.md
+
+OpenSpec changes:
+
+- [ ] `setup-monorepo`
+- [ ] `setup-local-infrastructure`
+
+Tasks:
+
+- [ ] Initialize Nx workspace.
+- [ ] Configure TypeScript base settings.
+- [ ] Configure ESLint.
+- [ ] Configure Prettier.
+- [ ] Configure test runner.
+- [x] Add Docker Compose.
+- [x] Add PostgreSQL service.
+- [x] Add MongoDB service.
+- [x] Add Redis service.
+- [x] Add Kafka service.
+- [x] Add Kafka admin UI if useful.
+- [x] Add health-check conventions.
+- [x] Add local environment documentation.
+
+Exit criteria:
+
+- `docker compose up` starts infrastructure.
+- Monorepo commands are available.
+- Empty build/test pipeline runs successfully.
+
+---
+
+# Phase 2: Shared Kernel
+
+Goal:
+
+Implement framework-independent domain primitives.
+
+References:
+
+- docs/03-tdd/02-domain-model.md
+- docs/02-architecture/domain-glossary.md
+
+OpenSpec changes:
+
+- [ ] `add-shared-kernel`
+
+Tasks:
+
+- [x] Create `libs/shared-kernel`.
+- [x] Implement `Entity`.
+- [ ] Implement `AggregateRoot`.
+- [x] Implement `ValueObject`.
+- [x] Implement `DomainEvent`.
+- [ ] Implement base ID value objects.
+- [ ] Implement `CompanyId`.
+- [ ] Implement `Money`.
+- [ ] Implement domain error base classes.
+- [ ] Implement optimistic version support.
+- [ ] Add unit tests for equality behavior.
+- [ ] Add unit tests for domain event recording.
+- [ ] Add unit tests for Money invariants.
+
+Exit criteria:
+
+- Shared kernel has no NestJS or infrastructure dependency.
+- All primitives are unit tested.
+- Domain layer can record and pull domain events.
+
+---
+
+# Phase 3: Contracts and Messaging Foundation
+
+Goal:
+
+Define shared event contracts and messaging abstractions before services publish events.
+
+References:
+
+- docs/03-tdd/05-messaging.md
+- docs/04-adr/0002-use-kafka-for-events.md
+- docs/04-adr/0004-use-transactional-outbox.md
+
+OpenSpec changes:
+
+- [ ] `add-event-contracts`
+- [ ] `add-event-bus-abstractions`
+
+Tasks:
+
+- [x] Create `libs/contracts`.
+- [x] Define event envelope contract.
+- [x] Define core payroll event names.
+- [ ] Define identity event contracts.
+- [ ] Define employee event contracts.
+- [ ] Define notification event contracts.
+- [ ] Add event version constants.
+- [x] Create `libs/event-bus`.
+- [x] Define event publisher port.
+- [x] Define event consumer handler port.
+- [ ] Define serialization/deserialization contracts.
+- [ ] Add contract tests for event envelope validation.
+
+Exit criteria:
+
+- Events have a common envelope.
+- Contracts are versioned.
+- Service code can depend on contracts without depending on Kafka directly.
+
+---
+
+# Phase 4: Application Foundation
+
+Goal:
+
+Create reusable NestJS infrastructure patterns without leaking framework concerns into domain code.
+
+References:
+
+- docs/03-tdd/03-microservices.md
+- docs/03-tdd/06-security.md
+- docs/03-tdd/10-observability.md
+
+OpenSpec changes:
+
+- [ ] `add-service-foundation`
+
+Tasks:
+
+- [ ] Define service module layout convention.
+- [ ] Add config loading pattern.
+- [ ] Add validation pipe pattern.
+- [ ] Add structured logger pattern.
+- [ ] Add correlation ID middleware.
+- [ ] Add health endpoint pattern.
+- [ ] Add global error response format.
+- [ ] Add testing utilities library.
+- [ ] Document service folder structure.
+
+Exit criteria:
+
+- New services can be generated consistently.
+- Health, config, logging and errors follow one convention.
+
+---
+
+# Phase 5: Auth Service
+
+Goal:
+
+Implement authentication and authorization foundation.
+
+References:
+
+- docs/03-tdd/03-microservices.md
+- docs/03-tdd/06-security.md
+
+OpenSpec changes:
+
+- [ ] `add-auth-service`
+
+Tasks:
+
+- [ ] Generate `auth-service`.
+- [ ] Define user aggregate.
+- [ ] Define credentials model.
+- [ ] Define refresh token model.
+- [ ] Add PostgreSQL persistence.
+- [ ] Add migrations.
+- [ ] Implement password hashing.
+- [ ] Implement login command.
+- [ ] Implement refresh token rotation.
+- [ ] Implement JWT issuing.
+- [ ] Implement JWT guard.
+- [ ] Implement RBAC guard.
+- [ ] Add unit tests for auth domain rules.
+- [ ] Add integration tests for persistence.
+- [ ] Add E2E tests for login and protected route behavior.
+
+Exit criteria:
+
+- Users can authenticate.
+- JWT access tokens can protect routes.
+- Role guard can enforce ADMIN, HR and EMPLOYEE access.
+
+---
+
+# Phase 6: Employee Service
+
+Goal:
+
+Implement employee management and salary data ownership.
+
+References:
+
+- docs/03-tdd/03-microservices.md
+- docs/03-tdd/02-domain-model.md
+
+OpenSpec changes:
+
+- [ ] `add-employee-service`
+
+Tasks:
+
+- [ ] Generate `employee-service`.
+- [ ] Define Employee aggregate.
+- [ ] Define salary value objects.
+- [ ] Define employment status transitions.
+- [ ] Add PostgreSQL persistence.
+- [ ] Add migrations.
+- [ ] Implement create employee command.
+- [ ] Implement update employee command.
+- [ ] Implement salary change command.
+- [ ] Implement terminate employee command.
+- [ ] Emit employee events through outbox.
+- [ ] Add unit tests for employee rules.
+- [ ] Add integration tests for repository behavior.
+- [ ] Add security tests for tenant isolation.
+
+Exit criteria:
+
+- Employee Service owns employee and salary data.
+- Employee events are recorded through outbox.
+- Tenant isolation is tested.
+
+---
+
+# Phase 7: Payroll Service
+
+Goal:
+
+Implement payroll periods and payroll job orchestration.
+
+References:
+
+- docs/05-specs/create-payroll-job.md
+- docs/03-tdd/03-microservices.md
+- docs/04-adr/0006-use-idempotency-for-critical-commands.md
+
+OpenSpec changes:
+
+- [ ] `add-payroll-service`
+- [ ] `implement-create-payroll-job`
+
+Tasks:
+
+- [ ] Generate `payroll-service`.
+- [ ] Define PayrollPeriod aggregate.
+- [ ] Define PayrollJob aggregate.
+- [ ] Implement payroll job state machine.
+- [ ] Add PostgreSQL persistence.
+- [ ] Add migrations.
+- [ ] Add unique constraint for company and period.
+- [ ] Implement idempotency storage.
+- [ ] Implement create payroll job command.
+- [ ] Store PayrollJobCreated in outbox.
+- [ ] Add unit tests for one-job-per-period rule.
+- [ ] Add integration tests for idempotency.
+- [ ] Add integration tests for outbox insertion.
+- [ ] Add E2E test for create payroll job.
+
+Exit criteria:
+
+- Payroll jobs can be created safely.
+- Duplicate requests are idempotent or rejected correctly.
+- PayrollJobCreated is persisted in the outbox transaction.
+
+---
+
+# Phase 8: Outbox Publisher and Kafka Integration
+
+Goal:
+
+Publish persisted outbox records to Kafka reliably.
+
+References:
+
+- docs/03-tdd/05-messaging.md
+- docs/04-adr/0004-use-transactional-outbox.md
+
+OpenSpec changes:
+
+- [ ] `add-transactional-outbox`
+- [ ] `add-kafka-publisher`
+
+Tasks:
+
+- [ ] Define outbox table schema.
+- [ ] Implement outbox repository.
+- [ ] Implement outbox publisher worker.
+- [ ] Implement Kafka producer adapter.
+- [ ] Add publish retry behavior.
+- [ ] Add publish failure tracking.
+- [ ] Add outbox metrics.
+- [ ] Add integration test for successful publish.
+- [ ] Add failure test for Kafka unavailable.
+- [ ] Add duplicate-safe publishing test where possible.
+
+Exit criteria:
+
+- Outbox records are published to Kafka.
+- Kafka outages do not lose committed events.
+- Publisher behavior is observable.
+
+---
+
+# Phase 9: Payroll Processing Service
+
+Goal:
+
+Implement the core distributed payroll processing engine.
+
+References:
+
+- docs/05-specs/process-payroll-job.md
+- docs/05-specs/generate-payslip.md
+- docs/03-tdd/03-microservices.md
+- docs/03-tdd/04-data-architecture.md
+
+OpenSpec changes:
+
+- [ ] `add-payroll-processing-service`
+- [ ] `process-payroll-job`
+- [ ] `generate-payslip`
+
+Tasks:
+
+- [ ] Generate `payroll-processing-service`.
+- [ ] Define PayrollTransaction aggregate.
+- [ ] Define Payslip aggregate.
+- [ ] Define payroll calculation domain service.
+- [ ] Add PostgreSQL persistence.
+- [ ] Add migrations.
+- [ ] Add processed event store.
+- [ ] Consume PayrollJobCreated.
+- [ ] Create transaction per eligible employee.
+- [ ] Process transactions independently.
+- [ ] Implement transaction retry behavior.
+- [ ] Implement optimistic locking.
+- [ ] Generate immutable payslip.
+- [ ] Emit PayrollTransactionCompleted.
+- [ ] Emit PayrollTransactionFailed.
+- [ ] Emit PayslipGenerated.
+- [ ] Add unit tests for transaction state machine.
+- [ ] Add unit tests for payroll calculation.
+- [ ] Add integration tests for duplicate event handling.
+- [ ] Add integration tests for optimistic locking.
+- [ ] Add E2E test for successful payroll processing.
+
+Exit criteria:
+
+- PayrollJobCreated triggers employee transactions.
+- Duplicate events do not duplicate transactions.
+- Payslips are generated once.
+- Individual transaction failures do not corrupt the whole job.
+
+---
+
+# Phase 10: Projection Service
+
+Goal:
+
+Build MongoDB read models for dashboards and reporting.
+
+References:
+
+- docs/03-tdd/04-data-architecture.md
+- docs/04-adr/0005-use-cqrs-projections.md
+
+OpenSpec changes:
+
+- [ ] `add-payroll-projection-service`
+
+Tasks:
+
+- [ ] Generate `payroll-projection-service`.
+- [ ] Define MongoDB projection collections.
+- [ ] Consume PayrollJobCreated.
+- [ ] Consume PayrollTransactionCompleted.
+- [ ] Consume PayrollTransactionFailed.
+- [ ] Consume PayslipGenerated.
+- [ ] Implement idempotent projection handlers.
+- [ ] Add dashboard query endpoints.
+- [ ] Add payslip search query endpoint.
+- [ ] Add projection lag metrics.
+- [ ] Add integration tests for projection updates.
+- [ ] Add duplicate event projection tests.
+
+Exit criteria:
+
+- Read models are created from events.
+- Dashboard queries do not require joining service databases.
+- Projection handlers are idempotent.
+
+---
+
+# Phase 11: Notification and Email Services
+
+Goal:
+
+Implement notification routing and email delivery isolation.
+
+References:
+
+- docs/03-tdd/03-microservices.md
+- docs/03-tdd/05-messaging.md
+
+OpenSpec changes:
+
+- [ ] `add-notification-service`
+- [ ] `add-email-service`
+
+Tasks:
+
+- [ ] Generate `notification-service`.
+- [ ] Generate `email-service`.
+- [ ] Consume PayslipGenerated.
+- [ ] Create notification request.
+- [ ] Decide email channel.
+- [ ] Emit EmailNotificationRequested.
+- [ ] Consume EmailNotificationRequested.
+- [ ] Implement local/dev email adapter.
+- [ ] Emit EmailSent.
+- [ ] Emit EmailFailed.
+- [ ] Add retry behavior for email failures.
+- [ ] Add integration tests for notification flow.
+- [ ] Add E2E test from payslip to email event.
+
+Exit criteria:
+
+- PayslipGenerated can trigger notification flow.
+- Email sending is isolated from payroll processing.
+- Email failures do not roll back payroll.
+
+---
+
+# Phase 12: Audit Service
+
+Goal:
+
+Store immutable audit records for business-critical events.
+
+References:
+
+- docs/05-specs/audit-business-events.md
+- docs/03-tdd/03-microservices.md
+
+OpenSpec changes:
+
+- [ ] `add-audit-service`
+
+Tasks:
+
+- [ ] Generate `audit-service`.
+- [ ] Define audit record model.
+- [ ] Add PostgreSQL persistence.
+- [ ] Add migrations.
+- [ ] Consume configured business events.
+- [ ] Redact sensitive fields.
+- [ ] Store immutable audit records.
+- [ ] Add query endpoint for audit records if required.
+- [ ] Add integration tests for audit event consumption.
+- [ ] Add duplicate event tests.
+- [ ] Add redaction tests.
+
+Exit criteria:
+
+- Business-critical events are audited.
+- Audit records are append-only.
+- Duplicate events do not duplicate audit records.
+
+---
+
+# Phase 13: Security Hardening
+
+Goal:
+
+Enforce security controls consistently across services.
+
+References:
+
+- docs/03-tdd/06-security.md
+
+OpenSpec changes:
+
+- [ ] `harden-service-security`
+
+Tasks:
+
+- [ ] Apply JWT guard to protected routes.
+- [ ] Apply RBAC guard to role-specific routes.
+- [ ] Enforce companyId scoping.
+- [ ] Add rate limiting.
+- [ ] Add secure headers.
+- [ ] Add request body limits.
+- [ ] Ensure secrets are loaded from environment.
+- [ ] Add unauthorized tests.
+- [ ] Add forbidden tests.
+- [ ] Add cross-tenant access tests.
+- [ ] Add invalid payload tests.
+
+Exit criteria:
+
+- Protected APIs reject unauthorized access.
+- Tenant isolation is tested.
+- Sensitive data is not logged.
+
+---
+
+# Phase 14: Observability
+
+Goal:
+
+Make distributed execution traceable and diagnosable.
+
+References:
+
+- docs/03-tdd/10-observability.md
+- docs/08-observability/monitoring.md
+
+OpenSpec changes:
+
+- [ ] `add-observability`
+
+Tasks:
+
+- [ ] Add structured logging to all services.
+- [ ] Propagate correlationId through HTTP.
+- [ ] Propagate correlationId through Kafka events.
+- [ ] Add request duration metrics.
+- [ ] Add Kafka consumer metrics.
+- [ ] Add outbox metrics.
+- [ ] Add payroll business metrics.
+- [ ] Add DLQ metrics.
+- [ ] Add initial dashboard documentation.
+- [ ] Add alert threshold documentation.
+
+Exit criteria:
+
+- A payroll job can be traced across services.
+- Kafka lag and outbox backlog are visible.
+- Failures include correlation IDs.
+
+---
+
+# Phase 15: End-to-End Workflow
+
+Goal:
+
+Validate the core business flow across all services.
+
+References:
+
+- docs/03-tdd/07-testing.md
+- docs/06-testing/performance-plans.md
+- docs/06-testing/chaos-plans.md
+
+OpenSpec changes:
+
+- [ ] `validate-end-to-end-payroll-workflow`
+
+Tasks:
+
+- [ ] Create company test fixture.
+- [ ] Create HR user test fixture.
+- [ ] Create employee test fixtures.
+- [ ] Create payroll period.
+- [ ] Create payroll job.
+- [ ] Publish PayrollJobCreated.
+- [ ] Process payroll transactions.
+- [ ] Generate payslips.
+- [ ] Update projections.
+- [ ] Trigger notifications.
+- [ ] Store audit records.
+- [ ] Assert final job state.
+- [ ] Assert no duplicate transactions.
+- [ ] Assert no duplicate payslips.
+
+Exit criteria:
+
+- Full payroll workflow passes locally.
+- Failure behavior is tested for duplicate messages.
+- Final state is visible in read models and audit records.
+
+---
+
+# Phase 16: Performance and Chaos Validation
+
+Goal:
+
+Demonstrate scalability and failure recovery.
+
+References:
+
+- docs/03-tdd/08-performance.md
+- docs/06-testing/performance-plans.md
+- docs/06-testing/chaos-plans.md
+
+OpenSpec changes:
+
+- [ ] `add-performance-tests`
+- [ ] `add-chaos-tests`
+
+Tasks:
+
+- [ ] Add load test for payroll job creation.
+- [ ] Add load test for 1,000 employee payroll job.
+- [ ] Add dashboard read load test.
+- [ ] Add Kafka unavailable failure test.
+- [ ] Add PostgreSQL unavailable failure test.
+- [ ] Add MongoDB unavailable failure test.
+- [ ] Add duplicate Kafka message failure test.
+- [ ] Add consumer crash recovery test.
+- [ ] Document measured baselines.
+- [ ] Document bottlenecks and follow-up tasks.
+
+Exit criteria:
+
+- Baseline performance numbers are recorded.
+- Failure scenarios preserve data integrity.
+- Known bottlenecks are documented.
+
+---
+
+# Recommended Starting Point
+
+Start here:
+
+1. Phase 0: Repository Readiness.
+2. Phase 1: Monorepo and Local Infrastructure.
+3. Phase 2: Shared Kernel.
+4. Phase 3: Contracts and Messaging Foundation.
+
+Reason:
+
+These phases create the foundation that every service depends on.
+
+Do not start with Payroll Processing Service until Shared Kernel, Contracts, Payroll Service and Outbox are ready.
+
+---
+
+# Current Priority Queue
+
+Immediate next tasks:
+
+- [x] Decide package manager.
+- [ ] Initialize Git repository.
+- [ ] Initialize OpenSpec baseline.
+- [ ] Create Nx workspace.
+- [ ] Add Docker Compose infrastructure.
+- [ ] Add shared-kernel spec.
+- [ ] Implement shared-kernel with tests.
+
+---
+
+# OpenSpec Change Queue
+
+Suggested order:
+
+1. `setup-monorepo`
+2. `setup-local-infrastructure`
+3. `add-shared-kernel`
+4. `add-event-contracts`
+5. `add-service-foundation`
+6. `add-auth-service`
+7. `add-employee-service`
+8. `add-payroll-service`
+9. `implement-create-payroll-job`
+10. `add-transactional-outbox`
+11. `add-kafka-publisher`
+12. `add-payroll-processing-service`
+13. `process-payroll-job`
+14. `generate-payslip`
+15. `add-payroll-projection-service`
+16. `add-notification-service`
+17. `add-email-service`
+18. `add-audit-service`
+19. `harden-service-security`
+20. `add-observability`
+21. `validate-end-to-end-payroll-workflow`
+22. `add-performance-tests`
+23. `add-chaos-tests`
+
+---
+
+# Implementation Guardrails
+
+Do:
+
+- Keep domain logic framework-independent.
+- Write tests before production code.
+- Use ADRs for new architecture decisions.
+- Keep services independently deployable.
+- Keep event contracts versioned.
+- Use idempotency for critical commands.
+
+Do not:
+
+- Share databases across services.
+- Put business logic in controllers.
+- Publish Kafka events outside the outbox.
+- Add generic `utils`, `helpers`, `misc` or `common` folders without justification.
+- Implement payroll processing before the orchestration and outbox foundation exist.
+
+---
+
+# Completion Tracker
+
+| Phase | Name | Status |
+| --- | --- | --- |
+| 0 | Repository Readiness | In progress |
+| 1 | Monorepo and Local Infrastructure | In progress |
+| 2 | Shared Kernel | In progress |
+| 3 | Contracts and Messaging Foundation | In progress |
+| 4 | Application Foundation | Not started |
+| 5 | Auth Service | Not started |
+| 6 | Employee Service | Not started |
+| 7 | Payroll Service | Not started |
+| 8 | Outbox Publisher and Kafka Integration | Not started |
+| 9 | Payroll Processing Service | Not started |
+| 10 | Projection Service | Not started |
+| 11 | Notification and Email Services | Not started |
+| 12 | Audit Service | Not started |
+| 13 | Security Hardening | Not started |
+| 14 | Observability | Not started |
+| 15 | End-to-End Workflow | Not started |
+| 16 | Performance and Chaos Validation | Not started |

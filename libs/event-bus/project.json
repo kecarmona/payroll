@@ -1,0 +1,23 @@
+{
+  "name": "event-bus",
+  "sourceRoot": "libs/event-bus/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/event-bus",
+        "main": "libs/event-bus/src/index.ts",
+        "tsConfig": "libs/event-bus/tsconfig.lib.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/event-bus/jest.config.ts"
+      }
+    }
+  }
+}
+

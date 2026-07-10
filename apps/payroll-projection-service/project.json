@@ -1,0 +1,29 @@
+{
+  "name": "payroll-projection-service",
+  "sourceRoot": "apps/payroll-projection-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/payroll-projection-service",
+        "main": "apps/payroll-projection-service/src/main.ts",
+        "tsConfig": "apps/payroll-projection-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "payroll-projection-service:build"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/payroll-projection-service/jest.config.ts"
+      }
+    }
+  }
+}
+
