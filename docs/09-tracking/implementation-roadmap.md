@@ -61,15 +61,15 @@ References:
 
 Tasks:
 
-- [ ] Initialize Git repository if not already initialized.
+- [x] Initialize Git repository if not already initialized.
 - [x] Add root README with project summary and local setup notes.
 - [x] Add `.gitignore` for Node, Docker, coverage and environment files.
 - [x] Add `.env.example` with required local variables.
 - [x] Add package manager decision: pnpm.
 - [x] Add root scripts for build, test, lint and format.
-- [ ] Add initial CI placeholder or document future CI plan.
-- [ ] Confirm OpenSpec folder structure and workflow.
-- [ ] Create initial OpenSpec project baseline.
+- [x] Add initial CI placeholder or document future CI plan.
+- [x] Confirm OpenSpec folder structure and workflow.
+- [x] Create initial OpenSpec project baseline.
 
 Exit criteria:
 
@@ -95,7 +95,7 @@ References:
 
 OpenSpec changes:
 
-- [ ] `setup-monorepo`
+- [x] `setup-monorepo`
 - [ ] `setup-local-infrastructure`
 
 Tasks:
@@ -736,8 +736,8 @@ Do not start with Payroll Processing Service until Shared Kernel, Contracts, Pay
 Immediate next tasks:
 
 - [x] Decide package manager.
-- [ ] Initialize Git repository.
-- [ ] Initialize OpenSpec baseline.
+- [x] Initialize Git repository.
+- [x] Initialize OpenSpec baseline.
 - [ ] Create Nx workspace.
 - [ ] Add Docker Compose infrastructure.
 - [ ] Add shared-kernel spec.
@@ -749,7 +749,7 @@ Immediate next tasks:
 
 Suggested order:
 
-1. `setup-monorepo`
+1. `setup-monorepo` ✅
 2. `setup-local-infrastructure`
 3. `add-shared-kernel`
 4. `add-event-contracts`
@@ -800,7 +800,7 @@ Do not:
 
 | Phase | Name | Status |
 | --- | --- | --- |
-| 0 | Repository Readiness | In progress |
+| 0 | Repository Readiness | ✅ Complete |
 | 1 | Monorepo and Local Infrastructure | In progress |
 | 2 | Shared Kernel | In progress |
 | 3 | Contracts and Messaging Foundation | In progress |
