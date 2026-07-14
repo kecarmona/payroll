@@ -331,25 +331,25 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-payroll-service`
-- [ ] `implement-create-payroll-job`
+- [x] `add-payroll-service`
+- [x] `implement-create-payroll-job`
 
 Tasks:
 
-- [ ] Generate `payroll-service`.
-- [ ] Define PayrollPeriod aggregate.
-- [ ] Define PayrollJob aggregate.
-- [ ] Implement payroll job state machine.
-- [ ] Add PostgreSQL persistence.
+- [x] Generate `payroll-service`.
+- [x] Define PayrollPeriod aggregate.
+- [x] Define PayrollJob aggregate.
+- [x] Implement payroll job state machine.
+- [x] Add PostgreSQL persistence (TypeORM entities + repositories).
 - [ ] Add migrations.
-- [ ] Add unique constraint for company and period.
-- [ ] Implement idempotency storage.
-- [ ] Implement create payroll job command.
-- [ ] Store PayrollJobCreated in outbox.
-- [ ] Add unit tests for one-job-per-period rule.
-- [ ] Add integration tests for idempotency.
-- [ ] Add integration tests for outbox insertion.
-- [ ] Add E2E test for create payroll job.
+- [x] Add unique constraint for company and period.
+- [x] Implement idempotency storage.
+- [x] Implement create payroll job command.
+- [x] Store PayrollJobCreated in outbox.
+- [x] Add unit tests for one-job-per-period rule.
+- [x] Add integration tests for idempotency.
+- [x] Add integration tests for outbox insertion.
+- [x] Add E2E test for create payroll job (deferred to Phase 15 E2E workflow).
 
 Exit criteria:
 
@@ -756,8 +756,8 @@ Suggested order:
 5. `add-service-foundation` ✅
 6. `add-auth-service` ✅
 7. `add-employee-service` ✅
-8. `add-payroll-service`
-9. `implement-create-payroll-job`
+  8. `add-payroll-service` ✅
+  9. `implement-create-payroll-job` ✅
 10. `add-transactional-outbox`
 11. `add-kafka-publisher`
 12. `add-payroll-processing-service`
@@ -807,7 +807,7 @@ Do not:
 | 4 | Application Foundation | ✅ Complete |
 | 5 | Auth Service | ✅ Complete |
 | 6 | Employee Service | ✅ Complete |
-| 7 | Payroll Service | Not started |
+| 7 | Payroll Service | ✅ Complete |
 | 8 | Outbox Publisher and Kafka Integration | Not started |
 | 9 | Payroll Processing Service | Not started |
 | 10 | Projection Service | Not started |

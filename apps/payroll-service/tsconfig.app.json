@@ -2,9 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/apps/payroll-service",
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": "../../",
+    "paths": {
+      "@payroll/shared-kernel": ["dist/libs/shared-kernel/src/index"],
+      "@payroll/contracts": ["dist/libs/contracts/src/index"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }
-
