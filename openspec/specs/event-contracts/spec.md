@@ -21,11 +21,11 @@ The `identity-events.ts` module MUST define const entries and a derived union ty
 
 ### R2: Employee Event Contracts Define Canonical Event Types
 
-The `employee-events.ts` module MUST define const entries and a derived union type for EmployeeCreated, EmployeeSalaryChanged, and EmployeeTerminated, following the same pattern.
+The `employee-events.ts` module MUST define const entries and a derived union type for EmployeeCreated, EmployeeUpdated, EmployeeSalaryChanged, and EmployeeTerminated, following the same pattern.
 
 - GIVEN no prior employee event types
 - WHEN importing `EmployeeEventType` from `employee-events.ts`
-- THEN it MUST contain entries for `EmployeeCreated`, `EmployeeSalaryChanged`, and `EmployeeTerminated`
+- THEN it MUST contain entries for `EmployeeCreated`, `EmployeeUpdated`, `EmployeeSalaryChanged`, and `EmployeeTerminated`
 - AND each entry's value MUST equal its key string
 
 - GIVEN an unknown event type string
@@ -46,7 +46,7 @@ The `notification-events.ts` module MUST define const entries and a derived unio
 
 ### R4: Event Version Registry Covers All Event Types
 
-The `event-versions.ts` module MUST export a const record mapping every event type string to its current version number. The record MUST cover all 20 event types from payroll, identity, employee, and notification domains. The type MUST enforce that every event type key is present.
+The `event-versions.ts` module MUST export a const record mapping every event type string to its current version number. The record MUST cover all 21 event types from payroll, identity, employee, and notification domains. The type MUST enforce that every event type key is present.
 
 - GIVEN the payroll domain
 - WHEN inspecting `EVENT_VERSIONS`
@@ -58,7 +58,7 @@ The `event-versions.ts` module MUST export a const record mapping every event ty
 
 - GIVEN the employee domain
 - WHEN inspecting `EVENT_VERSIONS`
-- THEN all 3 employee event types from `EmployeeEventType` MUST have an entry
+- THEN all 4 employee event types from `EmployeeEventType` MUST have an entry
 
 - GIVEN the notification domain
 - WHEN inspecting `EVENT_VERSIONS`

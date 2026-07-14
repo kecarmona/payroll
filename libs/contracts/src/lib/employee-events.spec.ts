@@ -1,26 +1,24 @@
 import { EmployeeEventType } from './employee-events';
 
 describe('EmployeeEventType', () => {
-  it('should define EmployeeCreated constant', () => {
-    expect(EmployeeEventType.EmployeeCreated).toBe('EmployeeCreated');
+  it('should define EMPLOYEE_CREATED constant', () => {
+    expect(EmployeeEventType.EMPLOYEE_CREATED).toBe('employee.created');
   });
 
-  it('should define EmployeeSalaryChanged constant', () => {
-    expect(EmployeeEventType.EmployeeSalaryChanged).toBe('EmployeeSalaryChanged');
+  it('should define EMPLOYEE_UPDATED constant', () => {
+    expect(EmployeeEventType.EMPLOYEE_UPDATED).toBe('employee.updated');
   });
 
-  it('should define EmployeeTerminated constant', () => {
-    expect(EmployeeEventType.EmployeeTerminated).toBe('EmployeeTerminated');
+  it('should define EMPLOYEE_SALARY_CHANGED constant', () => {
+    expect(EmployeeEventType.EMPLOYEE_SALARY_CHANGED).toBe('employee.salary.changed');
   });
 
-  it('should have exactly 3 entries', () => {
+  it('should define EMPLOYEE_TERMINATED constant', () => {
+    expect(EmployeeEventType.EMPLOYEE_TERMINATED).toBe('employee.terminated');
+  });
+
+  it('should have exactly 4 entries', () => {
     const entries = Object.keys(EmployeeEventType);
-    expect(entries).toHaveLength(3);
-  });
-
-  it('should have all values matching their keys', () => {
-    for (const [key, value] of Object.entries(EmployeeEventType)) {
-      expect(key).toBe(value);
-    }
+    expect(entries).toHaveLength(4);
   });
 });

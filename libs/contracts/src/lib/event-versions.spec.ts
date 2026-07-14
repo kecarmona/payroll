@@ -33,9 +33,9 @@ describe('EVENT_VERSIONS', () => {
     }
   });
 
-  it('should have exactly 20 entries', () => {
+  it('should have exactly 21 entries', () => {
     const keys = Object.keys(EVENT_VERSIONS);
-    expect(keys).toHaveLength(20);
+    expect(keys).toHaveLength(21);
   });
 
   it('should have all versions set to 1', () => {

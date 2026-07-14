@@ -290,24 +290,24 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-employee-service`
+- [x] `add-employee-service`
 
 Tasks:
 
-- [ ] Generate `employee-service`.
-- [ ] Define Employee aggregate.
-- [ ] Define salary value objects.
-- [ ] Define employment status transitions.
-- [ ] Add PostgreSQL persistence.
-- [ ] Add migrations.
-- [ ] Implement create employee command.
-- [ ] Implement update employee command.
-- [ ] Implement salary change command.
-- [ ] Implement terminate employee command.
-- [ ] Emit employee events through outbox.
-- [ ] Add unit tests for employee rules.
-- [ ] Add integration tests for repository behavior.
-- [ ] Add security tests for tenant isolation.
+- [x] Generate `employee-service`.
+- [x] Define Employee aggregate.
+- [x] Define salary value objects.
+- [x] Define employment status transitions.
+- [x] Add PostgreSQL persistence.
+- [x] Add migrations.
+- [x] Implement create employee command.
+- [x] Implement update employee command.
+- [x] Implement salary change command.
+- [x] Implement terminate employee command.
+- [x] Emit employee events through outbox.
+- [x] Add unit tests for employee rules.
+- [x] Add integration tests for repository behavior.
+- [x] Add security tests for tenant isolation.
 
 Exit criteria:
 
@@ -755,7 +755,7 @@ Suggested order:
 4. `add-event-contracts` ✅
 5. `add-service-foundation` ✅
 6. `add-auth-service` ✅
-7. `add-employee-service`
+7. `add-employee-service` ✅
 8. `add-payroll-service`
 9. `implement-create-payroll-job`
 10. `add-transactional-outbox`
@@ -806,7 +806,7 @@ Do not:
 | 3 | Contracts and Messaging Foundation | ✅ Complete |
 | 4 | Application Foundation | ✅ Complete |
 | 5 | Auth Service | ✅ Complete |
-| 6 | Employee Service | Not started |
+| 6 | Employee Service | ✅ Complete |
 | 7 | Payroll Service | Not started |
 | 8 | Outbox Publisher and Kafka Integration | Not started |
 | 9 | Payroll Processing Service | Not started |

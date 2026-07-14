@@ -39,10 +39,11 @@ export const EVENT_VERSIONS = {
   PasswordChanged: 1,
   UserDeactivated: 1,
 
-  // ── Employee (3 events) ──────────────────────────────────────
-  EmployeeCreated: 1,
-  EmployeeSalaryChanged: 1,
-  EmployeeTerminated: 1,
+  // ── Employee (4 events) ──────────────────────────────────────
+  'employee.created': 1,
+  'employee.updated': 1,
+  'employee.salary.changed': 1,
+  'employee.terminated': 1,
 
   // ── Notification (4 events) ──────────────────────────────────
   NotificationRequested: 1,
