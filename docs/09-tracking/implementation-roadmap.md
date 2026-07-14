@@ -249,25 +249,25 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-auth-service`
+- [x] `add-auth-service`
 
 Tasks:
 
-- [ ] Generate `auth-service`.
-- [ ] Define user aggregate.
-- [ ] Define credentials model.
-- [ ] Define refresh token model.
-- [ ] Add PostgreSQL persistence.
-- [ ] Add migrations.
-- [ ] Implement password hashing.
-- [ ] Implement login command.
-- [ ] Implement refresh token rotation.
-- [ ] Implement JWT issuing.
-- [ ] Implement JWT guard.
-- [ ] Implement RBAC guard.
-- [ ] Add unit tests for auth domain rules.
-- [ ] Add integration tests for persistence.
-- [ ] Add E2E tests for login and protected route behavior.
+- [x] Generate `auth-service`.
+- [x] Define user aggregate.
+- [x] Define credentials model.
+- [x] Define refresh token model.
+- [x] Add PostgreSQL persistence.
+- [x] Add migrations.
+- [x] Implement password hashing.
+- [x] Implement login command.
+- [x] Implement refresh token rotation.
+- [x] Implement JWT issuing.
+- [x] Implement JWT guard.
+- [x] Implement RBAC guard.
+- [x] Add unit tests for auth domain rules.
+- [x] Add integration tests for persistence.
+- [x] Add E2E tests for login and protected route behavior.
 
 Exit criteria:
 
@@ -751,10 +751,10 @@ Suggested order:
 
 1. `setup-monorepo` ✅
 2. `setup-local-infrastructure` ✅
-3. `add-shared-kernel`
-4. `add-event-contracts`
-5. `add-service-foundation`
-6. `add-auth-service`
+3. `add-shared-kernel` ✅
+4. `add-event-contracts` ✅
+5. `add-service-foundation` ✅
+6. `add-auth-service` ✅
 7. `add-employee-service`
 8. `add-payroll-service`
 9. `implement-create-payroll-job`
@@ -803,9 +803,9 @@ Do not:
 | 0 | Repository Readiness | ✅ Complete |
 | 1 | Monorepo and Local Infrastructure | ✅ Complete |
 | 2 | Shared Kernel | ✅ Complete |
-| 3 | Contracts and Messaging Foundation | In progress |
+| 3 | Contracts and Messaging Foundation | ✅ Complete |
 | 4 | Application Foundation | ✅ Complete |
-| 5 | Auth Service | Not started |
+| 5 | Auth Service | ✅ Complete |
 | 6 | Employee Service | Not started |
 | 7 | Payroll Service | Not started |
 | 8 | Outbox Publisher and Kafka Integration | Not started |
