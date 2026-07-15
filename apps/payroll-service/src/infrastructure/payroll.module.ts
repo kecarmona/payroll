@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { OUTBOX_STORE_TOKEN } from '@payroll/transactional-outbox';
+import { TypeOrmOutboxEntity } from '@payroll/transactional-outbox';
 import { TypeOrmPayrollPeriodEntity } from './persistence/typeorm-payroll-period.entity';
 import { TypeOrmPayrollJobEntity } from './persistence/typeorm-payroll-job.entity';
 import { TypeOrmIdempotencyEntity } from './persistence/typeorm-idempotency.entity';
-import { TypeOrmOutboxEntity } from './persistence/typeorm-outbox.entity';
 import { TypeOrmPayrollPeriodRepository } from './persistence/typeorm-payroll-period.repository';
 import { TypeOrmPayrollJobRepository } from './persistence/typeorm-payroll-job.repository';
 import { TypeOrmIdempotencyRepository } from './persistence/typeorm-idempotency.repository';
-import { TypeOrmOutboxRepository } from './persistence/typeorm-outbox.repository';
 
 /**
  * Injection tokens for domain port implementations.
@@ -29,7 +29,6 @@ import { TypeOrmOutboxRepository } from './persistence/typeorm-outbox.repository
 export const PAYROLL_PERIOD_REPOSITORY_TOKEN = 'PayrollPeriodRepository';
 export const PAYROLL_JOB_REPOSITORY_TOKEN = 'PayrollJobRepository';
 export const IDEMPOTENCY_STORE_TOKEN = 'IdempotencyStore';
-export const OUTBOX_STORE_TOKEN = 'OutboxStore';
 
 /**
  * NestJS module that wires the infrastructure layer for the Payroll Service.
@@ -41,7 +40,9 @@ export const OUTBOX_STORE_TOKEN = 'OutboxStore';
  * | `'PayrollPeriodRepository'` | {@link TypeOrmPayrollPeriodRepository} | {@link PayrollPeriodRepository} |
  * | `'PayrollJobRepository'` | {@link TypeOrmPayrollJobRepository} | {@link PayrollJobRepository} |
  * | `'IdempotencyStore'` | {@link TypeOrmIdempotencyRepository} | {@link IdempotencyStore} |
- * | `'OutboxStore'` | {@link TypeOrmOutboxRepository} | {@link OutboxStore} |
+ *
+ * The `OutboxStore` token is provided by the shared
+ * {@link TransactionalOutboxModule} imported at the application level.
  */
 @Module({
   imports: [
@@ -64,10 +65,6 @@ export const OUTBOX_STORE_TOKEN = 'OutboxStore';
     {
       provide: IDEMPOTENCY_STORE_TOKEN,
       useClass: TypeOrmIdempotencyRepository,
-    },
-    {
-      provide: OUTBOX_STORE_TOKEN,
-      useClass: TypeOrmOutboxRepository,
     },
   ],
   exports: [

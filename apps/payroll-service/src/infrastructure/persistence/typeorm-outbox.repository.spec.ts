@@ -1,8 +1,7 @@
 import { DataSource, Repository } from 'typeorm';
-import { TypeOrmOutboxRepository } from './typeorm-outbox.repository';
-import { TypeOrmOutboxEntity } from './typeorm-outbox.entity';
+import { TypeOrmOutboxRepository, TypeOrmOutboxEntity } from '@payroll/transactional-outbox';
 
-describe('TypeOrmOutboxRepository', () => {
+describe('TypeOrmOutboxRepository (via shared lib)', () => {
   let repository: TypeOrmOutboxRepository;
   let mockDataSource: jest.Mocked<DataSource>;
   let mockTypeOrmRepo: jest.Mocked<Repository<TypeOrmOutboxEntity>>;
@@ -40,6 +39,8 @@ describe('TypeOrmOutboxRepository', () => {
       expect(savedEntity.aggregateId).toBe('job-456');
       expect(savedEntity.payload).toEqual(event.payload);
       expect(savedEntity.publishedAt).toBeNull();
+      expect(savedEntity.retryCount).toBe(0);
+      expect(savedEntity.lastError).toBeNull();
       expect(savedEntity.createdAt).toBeInstanceOf(Date);
     });
   });

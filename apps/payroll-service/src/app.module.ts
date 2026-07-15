@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { TransactionalOutboxModule } from '@payroll/transactional-outbox';
 import { HealthController } from './health.controller';
-import { PayrollModule, PAYROLL_PERIOD_REPOSITORY_TOKEN, PAYROLL_JOB_REPOSITORY_TOKEN, IDEMPOTENCY_STORE_TOKEN, OUTBOX_STORE_TOKEN } from './infrastructure/payroll.module';
+import { PayrollModule, PAYROLL_PERIOD_REPOSITORY_TOKEN, PAYROLL_JOB_REPOSITORY_TOKEN, IDEMPOTENCY_STORE_TOKEN } from './infrastructure/payroll.module';
 import { PayrollController } from './interface/payroll.controller';
 import { CreatePayrollPeriodHandler } from './application/create-payroll-period.command';
 import { CreatePayrollJobHandler } from './application/create-payroll-job.command';
@@ -18,6 +19,7 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
  * - Environment variable loading via `@nestjs/config`
  * - TypeORM connection to PostgreSQL (payroll database)
  * - Payroll domain infrastructure (repositories)
+ * - Shared transactional outbox module for event persistence
  * - Application command and query handlers
  * - Idempotency guard for safe request retry
  * - HTTP interface (controllers)
@@ -36,6 +38,7 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
       synchronize: process.env.NODE_ENV !== 'production',
     }),
     PayrollModule,
+    TransactionalOutboxModule.forRoot(),
   ],
   controllers: [HealthController, PayrollController],
   providers: [
@@ -58,7 +61,7 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
         PAYROLL_PERIOD_REPOSITORY_TOKEN,
         PAYROLL_JOB_REPOSITORY_TOKEN,
         IDEMPOTENCY_STORE_TOKEN,
-        OUTBOX_STORE_TOKEN,
+        'OutboxStore',
       ],
       useFactory: (
         dataSource: unknown,

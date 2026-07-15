@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import type { OutboxStore } from '../../domain/outbox-store';
+import type { OutboxStore } from './outbox-store';
 import { TypeOrmOutboxEntity } from './typeorm-outbox.entity';
 
 /**
  * TypeORM-backed implementation of the {@link OutboxStore} port.
  *
  * Converts outbox event data to {@link TypeOrmOutboxEntity} and persists
- * it to the `outbox` table.
+ * it to the `outbox` table. Uses the DataSource to obtain a repository
+ * instance, which supports transactional scenarios when run within a
+ * TypeORM transaction manager.
  */
 @Injectable()
 export class TypeOrmOutboxRepository implements OutboxStore {
@@ -30,6 +32,8 @@ export class TypeOrmOutboxRepository implements OutboxStore {
     entity.payload = event.payload;
     entity.createdAt = new Date();
     entity.publishedAt = null;
+    entity.retryCount = 0;
+    entity.lastError = null;
     await this.repository.save(entity);
   }
 }

@@ -10,5 +10,6 @@ export default {
   moduleNameMapper: {
     '^@payroll/shared-kernel$': '<rootDir>/../../libs/shared-kernel/src/index.ts',
     '^@payroll/contracts$': '<rootDir>/../../libs/contracts/src/index.ts',
+    '^@payroll/transactional-outbox$': '<rootDir>/../../libs/transactional-outbox/src/index.ts',
   },
 };
