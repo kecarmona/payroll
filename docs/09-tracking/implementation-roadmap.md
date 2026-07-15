@@ -463,22 +463,22 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-payroll-projection-service`
+- [x] `add-payroll-projection-service`
 
 Tasks:
 
-- [ ] Generate `payroll-projection-service`.
-- [ ] Define MongoDB projection collections.
-- [ ] Consume PayrollJobCreated.
-- [ ] Consume PayrollTransactionCompleted.
-- [ ] Consume PayrollTransactionFailed.
-- [ ] Consume PayslipGenerated.
-- [ ] Implement idempotent projection handlers.
-- [ ] Add dashboard query endpoints.
-- [ ] Add payslip search query endpoint.
-- [ ] Add projection lag metrics.
-- [ ] Add integration tests for projection updates.
-- [ ] Add duplicate event projection tests.
+- [x] Generate `payroll-projection-service`.
+- [x] Define MongoDB projection collections.
+- [x] Consume PayrollJobCreated.
+- [x] Consume PayrollTransactionCompleted.
+- [x] Consume PayrollTransactionFailed.
+- [x] Consume PayslipGenerated.
+- [x] Implement idempotent projection handlers.
+- [x] Add dashboard query endpoints.
+- [x] Add payslip search query endpoint.
+- [x] Add projection lag metrics.
+- [x] Add integration tests for projection updates.
+- [x] Add duplicate event projection tests.
 
 Exit criteria:
 
@@ -501,24 +501,24 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-notification-service`
-- [ ] `add-email-service`
+- [x] `add-notification-service`
+- [x] `add-email-service`
 
 Tasks:
 
-- [ ] Generate `notification-service`.
-- [ ] Generate `email-service`.
-- [ ] Consume PayslipGenerated.
-- [ ] Create notification request.
-- [ ] Decide email channel.
-- [ ] Emit EmailNotificationRequested.
-- [ ] Consume EmailNotificationRequested.
-- [ ] Implement local/dev email adapter.
-- [ ] Emit EmailSent.
-- [ ] Emit EmailFailed.
-- [ ] Add retry behavior for email failures.
-- [ ] Add integration tests for notification flow.
-- [ ] Add E2E test from payslip to email event.
+- [x] Generate `notification-service`.
+- [x] Generate `email-service`.
+- [x] Consume PayslipGenerated.
+- [x] Create notification request.
+- [x] Decide email channel.
+- [x] Emit EmailNotificationRequested.
+- [x] Consume EmailNotificationRequested.
+- [x] Implement local/dev email adapter.
+- [x] Emit EmailSent.
+- [x] Emit EmailFailed.
+- [x] Add retry behavior for email failures.
+- [x] Add integration tests for notification flow.
+- [x] Add E2E test from payslip to email event.
 
 Exit criteria:
 
@@ -541,21 +541,21 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-audit-service`
+- [x] `add-audit-service`
 
 Tasks:
 
-- [ ] Generate `audit-service`.
-- [ ] Define audit record model.
-- [ ] Add PostgreSQL persistence.
-- [ ] Add migrations.
-- [ ] Consume configured business events.
-- [ ] Redact sensitive fields.
-- [ ] Store immutable audit records.
-- [ ] Add query endpoint for audit records if required.
-- [ ] Add integration tests for audit event consumption.
-- [ ] Add duplicate event tests.
-- [ ] Add redaction tests.
+- [x] Generate `audit-service` — pre-existing scaffold.
+- [x] Define audit record model (domain entity, redaction service, ports).
+- [x] Add PostgreSQL persistence (TypeORM entity, repository, module).
+- [x] Add migrations — schema managed via autoLoadEntities + synchronize.
+- [x] Consume configured business events (AuditConsumer from audit.events topic).
+- [x] Redact sensitive fields (RedactionService — 9 sensitive keys).
+- [x] Store immutable audit records (frozen AuditRecord entity).
+- [x] No query endpoint — append-only per spec.
+- [x] Add unit tests for handler, consumer, repository (31 tests total).
+- [x] Add duplicate event tests (idempotency via ProcessedEventStore).
+- [x] Add redaction tests (7 test cases).
 
 Exit criteria:
 
@@ -768,7 +768,7 @@ Suggested order:
 15. `add-payroll-projection-service`
 16. `add-notification-service`
 17. `add-email-service`
-18. `add-audit-service`
+18. `add-audit-service` ✅
 19. `harden-service-security`
 20. `add-observability`
 21. `validate-end-to-end-payroll-workflow`
@@ -812,9 +812,9 @@ Do not:
 | 7 | Payroll Service | ✅ Complete |
 | 8 | Outbox Publisher and Kafka Integration | ✅ Complete |
 | 9 | Payroll Processing Service | ✅ Complete |
-| 10 | Projection Service | Not started |
-| 11 | Notification and Email Services | Not started |
-| 12 | Audit Service | Not started |
+| 10 | Projection Service | ✅ Complete |
+| 11 | Notification and Email Services | ✅ Complete |
+| 12 | Audit Service | ✅ Complete |
 | 13 | Security Hardening | Not started |
 | 14 | Observability | Not started |
 | 15 | End-to-End Workflow | Not started |

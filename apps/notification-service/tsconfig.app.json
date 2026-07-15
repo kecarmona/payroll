@@ -2,9 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/apps/notification-service",
-    "types": ["node"]
+    "types": ["node"],
+    "paths": {
+      "@payroll/shared-kernel": ["dist/libs/shared-kernel/src/index"],
+      "@payroll/contracts": ["dist/libs/contracts/src/index"],
+      "@payroll/event-bus": ["dist/libs/event-bus/src/index"],
+      "@payroll/service-foundation": ["dist/libs/service-foundation/src/index"],
+      "@payroll/transactional-outbox": ["dist/libs/transactional-outbox/src/index"]
+    }
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]
 }
-
