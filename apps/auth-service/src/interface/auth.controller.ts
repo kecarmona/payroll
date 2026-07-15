@@ -26,10 +26,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { TokenResponseDto } from './dto/token-response.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { RolesGuard } from './guards/roles.guard';
-import { Roles } from './decorators/roles.decorator';
-import { CurrentUser } from './decorators/current-user.decorator';
+import { JwtAuthGuard, RolesGuard, Roles, CurrentUser } from '@payroll/auth-guards';
 import { UserRole } from '../domain/user-role';
 
 interface JwtPayload {

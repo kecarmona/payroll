@@ -577,21 +577,21 @@ References:
 
 OpenSpec changes:
 
-- [ ] `harden-service-security`
+- [x] `harden-service-security`
 
 Tasks:
 
-- [ ] Apply JWT guard to protected routes.
-- [ ] Apply RBAC guard to role-specific routes.
-- [ ] Enforce companyId scoping.
-- [ ] Add rate limiting.
-- [ ] Add secure headers.
-- [ ] Add request body limits.
-- [ ] Ensure secrets are loaded from environment.
-- [ ] Add unauthorized tests.
-- [ ] Add forbidden tests.
-- [ ] Add cross-tenant access tests.
-- [ ] Add invalid payload tests.
+- [x] Apply JWT guard to protected routes.
+- [x] Apply RBAC guard to role-specific routes.
+- [x] Enforce companyId scoping.
+- [x] Add rate limiting (10 req/s default, 5 req/min auth).
+- [x] Add secure headers (helmet).
+- [x] Add request body limits.
+- [x] Ensure secrets are loaded from environment.
+- [x] Add unauthorized tests.
+- [x] Add forbidden tests.
+- [x] Add cross-tenant access tests.
+- [x] Add invalid payload tests.
 
 Exit criteria:
 
@@ -815,7 +815,7 @@ Do not:
 | 10 | Projection Service | ✅ Complete |
 | 11 | Notification and Email Services | ✅ Complete |
 | 12 | Audit Service | ✅ Complete |
-| 13 | Security Hardening | Not started |
+| 13 | Security Hardening | ✅ Complete |
 | 14 | Observability | Not started |
 | 15 | End-to-End Workflow | Not started |
 | 16 | Performance and Chaos Validation | Not started |

@@ -11,16 +11,20 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiHeader,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard, RolesGuard, Roles } from '@payroll/auth-guards';
 import { CreatePayrollPeriodHandler, CreatePayrollPeriodCommand } from '../application/create-payroll-period.command';
 import { CreatePayrollJobHandler, CreatePayrollJobCommand } from '../application/create-payroll-job.command';
 import { GetPayrollJobHandler, GetPayrollJobQuery } from '../application/queries/get-payroll-job.query';
@@ -39,7 +43,16 @@ import { IdempotencyGuard } from './guards/idempotency.guard';
  *
  * All endpoints are grouped under `/payroll` and documented
  * with OpenAPI/Swagger decorators for API exploration.
+ *
+ * ## Security
+ * All endpoints require JWT authentication via Bearer token.
+ * Write operations (POST) require HR or ADMIN role.
+ * Read operations (GET) require at least EMPLOYEE role.
  */
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Missing or invalid JWT token' })
+@ApiForbiddenResponse({ description: 'Insufficient role permissions' })
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('Payroll')
 @Controller('payroll')
 export class PayrollController {
@@ -57,6 +70,7 @@ export class PayrollController {
    * Returns the new period's unique identifier.
    */
   @Post('periods')
+  @Roles('HR', 'ADMIN')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
     summary: 'Create a new payroll period',
@@ -96,6 +110,7 @@ export class PayrollController {
    * Idempotent — requires an `Idempotency-Key` header for safe retry.
    */
   @Post('jobs')
+  @Roles('HR', 'ADMIN')
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(IdempotencyGuard)
   @ApiOperation({
@@ -141,6 +156,7 @@ export class PayrollController {
    * Returns the full job data for the given job identifier.
    */
   @Get('jobs/:id')
+  @Roles('EMPLOYEE', 'HR', 'ADMIN')
   @ApiOperation({
     summary: 'Get payroll job by ID',
     description: 'Returns the full payroll job data for the given unique identifier.',
@@ -169,6 +185,7 @@ export class PayrollController {
    * Looks up a job using the company and period identifiers.
    */
   @Get('jobs')
+  @Roles('EMPLOYEE', 'HR', 'ADMIN')
   @ApiOperation({
     summary: 'Get payroll job by company and period',
     description: 'Looks up a payroll job by company ID and period ID.',
@@ -201,6 +218,7 @@ export class PayrollController {
    * Returns all payroll periods belonging to the specified company.
    */
   @Get('periods')
+  @Roles('EMPLOYEE', 'HR', 'ADMIN')
   @ApiOperation({
     summary: 'List payroll periods by company',
     description: 'Returns all payroll periods belonging to the specified company.',

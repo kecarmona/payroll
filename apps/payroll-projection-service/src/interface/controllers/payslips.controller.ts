@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@payroll/auth-guards';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PayslipProjection } from '../../infrastructure/mongoose/payslip.schema';
@@ -9,7 +10,13 @@ import { PayslipProjection } from '../../infrastructure/mongoose/payslip.schema'
  *
  * Provides read-only endpoints to search and retrieve denormalized
  * payslip data from the MongoDB projection store.
+ *
+ * ## Security
+ * All endpoints require JWT authentication via Bearer token.
  */
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Missing or invalid JWT token' })
+@UseGuards(JwtAuthGuard)
 @ApiTags('Projections - Payslips')
 @Controller('api/projections/payslips')
 export class PayslipsController {

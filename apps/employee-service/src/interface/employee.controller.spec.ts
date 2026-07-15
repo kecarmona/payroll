@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthGuard, RolesGuard } from '@payroll/auth-guards';
 import { ValidationError } from '@payroll/shared-kernel';
 import { CreateEmployeeHandler, CreateEmployeeCommand } from '../application/create-employee.command';
 import { UpdateEmployeeHandler, UpdateEmployeeCommand } from '../application/update-employee.command';
@@ -63,7 +65,12 @@ describe('EmployeeController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EmployeeController],
+      imports: [
+        JwtModule.register({ secret: 'test-secret' }),
+      ],
       providers: [
+        JwtAuthGuard,
+        RolesGuard,
         { provide: CreateEmployeeHandler, useValue: mockCreateHandler },
         { provide: UpdateEmployeeHandler, useValue: mockUpdateHandler },
         { provide: ChangeSalaryHandler, useValue: mockChangeSalaryHandler },

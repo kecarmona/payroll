@@ -9,7 +9,8 @@
       "@payroll/contracts": ["libs/contracts/src/index.ts"],
       "@payroll/event-bus": ["libs/event-bus/src/index.ts"],
       "@payroll/service-foundation": ["libs/service-foundation/src/index.ts"],
-      "@payroll/testing": ["libs/testing/src/index.ts"]
+      "@payroll/testing": ["libs/testing/src/index.ts"],
+      "@payroll/auth-guards": ["libs/auth-guards/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts"],

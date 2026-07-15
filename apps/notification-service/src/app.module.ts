@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthGuardsModule } from '@payroll/auth-guards';
 import { HealthController } from './health.controller';
 import {
   NotificationModule,
@@ -22,6 +24,7 @@ import { OUTBOX_STORE_TOKEN } from '@payroll/transactional-outbox';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST ?? 'localhost',
@@ -32,6 +35,7 @@ import { OUTBOX_STORE_TOKEN } from '@payroll/transactional-outbox';
       autoLoadEntities: true,
       synchronize: process.env.NODE_ENV !== 'production',
     }),
+    AuthGuardsModule,
     NotificationModule,
   ],
   controllers: [HealthController],

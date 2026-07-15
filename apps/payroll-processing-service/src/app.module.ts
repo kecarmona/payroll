@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { AuthGuardsModule } from '@payroll/auth-guards';
 import { TransactionalOutboxModule } from '@payroll/transactional-outbox';
 import { HealthController } from './health.controller';
 import {
@@ -30,6 +32,7 @@ import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST ?? 'localhost',
@@ -40,6 +43,7 @@ import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
       autoLoadEntities: true,
       synchronize: process.env.NODE_ENV !== 'production',
     }),
+    AuthGuardsModule,
     PayrollProcessingModule,
     TransactionalOutboxModule.forRoot(),
   ],

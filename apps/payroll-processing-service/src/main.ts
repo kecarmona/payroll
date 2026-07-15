@@ -1,6 +1,8 @@
 import 'reflect-metadata';
+import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 
 /**
@@ -13,7 +15,11 @@ import { AppModule } from './app.module';
  * registered in {@link AppModule}.
  */
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Security middleware
+  app.use(helmet());
+  app.set('trust proxy', 1);
 
   app.useGlobalPipes(
     new ValidationPipe({

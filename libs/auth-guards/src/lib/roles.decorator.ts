@@ -1,5 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
-import { UserRole } from '../../domain/user-role';
 
 /**
  * Metadata key used by {@link RolesGuard} to look up required roles.
@@ -15,10 +14,10 @@ export const ROLES_KEY = 'roles';
  *
  * @example
  * ```ts
- * \@Roles(UserRole.ADMIN)
+ * \@Roles('ADMIN')
  * \@UseGuards(JwtAuthGuard, RolesGuard)
  * \@Get('admin-only')
  * adminEndpoint() { ... }
  * ```
  */
-export const Roles = (...roles: UserRole[]) => SetMetadata(ROLES_KEY, roles);
+export const Roles = (...roles: string[]) => SetMetadata(ROLES_KEY, roles);

@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthGuard, RolesGuard } from '@payroll/auth-guards';
 import { CreatePayrollPeriodHandler, CreatePayrollPeriodCommand } from '../application/create-payroll-period.command';
 import { CreatePayrollJobHandler, CreatePayrollJobCommand } from '../application/create-payroll-job.command';
 import { GetPayrollJobHandler, GetPayrollJobQuery } from '../application/queries/get-payroll-job.query';
@@ -73,7 +75,12 @@ describe('PayrollController', () => {
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PayrollController],
+      imports: [
+        JwtModule.register({ secret: 'test-secret' }),
+      ],
       providers: [
+        JwtAuthGuard,
+        RolesGuard,
         { provide: CreatePayrollPeriodHandler, useValue: mockCreatePeriodHandler },
         { provide: CreatePayrollJobHandler, useValue: mockCreateJobHandler },
         { provide: GetPayrollJobHandler, useValue: mockGetJobHandler },

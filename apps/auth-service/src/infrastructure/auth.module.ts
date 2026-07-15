@@ -73,7 +73,6 @@ export const EVENT_PUBLISHER_TOKEN = 'EventPublisher';
   imports: [
     TypeOrmModule.forFeature([TypeOrmUserEntity, TypeOrmRefreshTokenEntity]),
     JwtModule.register({
-      global: true,
       secret: process.env.JWT_SECRET ?? 'dev-secret-change-in-production',
       signOptions: { expiresIn: '15m' },
     }),

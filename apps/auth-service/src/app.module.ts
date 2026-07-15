@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthGuardsModule } from '@payroll/auth-guards';
 import { HealthController } from './health.controller';
 import { AuthModule } from './infrastructure/auth.module';
 import { AuthController } from './interface/auth.controller';
@@ -31,6 +33,7 @@ import {
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST ?? 'localhost',
@@ -41,6 +44,7 @@ import {
       autoLoadEntities: true,
       synchronize: process.env.NODE_ENV !== 'production',
     }),
+    AuthGuardsModule,
     AuthModule,
   ],
   controllers: [HealthController, AuthController],

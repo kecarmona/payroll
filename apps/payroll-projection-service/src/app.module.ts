@@ -1,6 +1,8 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthGuardsModule } from '@payroll/auth-guards';
 import { HealthController } from './health.controller';
 import { ProjectionModule } from './application/projection.module';
 import { ProjectionMongooseModule } from './infrastructure/mongoose/projection-mongoose.module';
@@ -23,9 +25,11 @@ import { ProjectionConsumerService } from './interface/kafka/projection-consumer
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     MongooseModule.forRoot(
       process.env.MONGODB_URI ?? 'mongodb://localhost:27017/payroll_projections',
     ),
+    AuthGuardsModule,
     ProjectionMongooseModule,
     ProjectionModule,
     InterfaceModule,

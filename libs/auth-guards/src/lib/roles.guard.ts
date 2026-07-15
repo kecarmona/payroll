@@ -1,7 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '../../domain/user-role';
-import { ROLES_KEY } from '../decorators/roles.decorator';
+import { ROLES_KEY } from './roles.decorator';
 
 /**
  * Guard that enforces role-based access control by reading `@Roles()`
@@ -14,7 +13,7 @@ import { ROLES_KEY } from '../decorators/roles.decorator';
  *
  * @example
  * ```ts
- * \@Roles(UserRole.ADMIN)
+ * \@Roles('ADMIN')
  * \@UseGuards(JwtAuthGuard, RolesGuard)
  * \@Get('admin')
  * adminOnly() { ... }
@@ -34,7 +33,7 @@ export class RolesGuard implements CanActivate {
    *   or if no authenticated user is present.
    */
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);

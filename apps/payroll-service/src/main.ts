@@ -1,6 +1,8 @@
 import 'reflect-metadata';
+import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
@@ -11,7 +13,11 @@ import { AppModule } from './app.module';
  * and listens on the port specified by `PAYROLL_SERVICE_PORT` (default: 3003).
  */
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Security middleware
+  app.use(helmet());
+  app.set('trust proxy', 1);
 
   app.useGlobalPipes(
     new ValidationPipe({

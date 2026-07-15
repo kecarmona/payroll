@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthGuardsModule } from '@payroll/auth-guards';
 import { HealthController } from './health.controller';
 import { EmployeeModule, EMPLOYEE_REPOSITORY_TOKEN, EVENT_PUBLISHER_TOKEN } from './infrastructure/employee.module';
 import { EmployeeController } from './interface/employee.controller';
@@ -24,6 +26,7 @@ import { ListEmployeesHandler } from './application/queries/list-employees.query
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST ?? 'localhost',
@@ -34,6 +37,7 @@ import { ListEmployeesHandler } from './application/queries/list-employees.query
       autoLoadEntities: true,
       synchronize: process.env.NODE_ENV !== 'production',
     }),
+    AuthGuardsModule,
     EmployeeModule,
   ],
   controllers: [HealthController, EmployeeController],

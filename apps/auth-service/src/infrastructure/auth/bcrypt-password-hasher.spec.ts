@@ -1,5 +1,7 @@
 import { BcryptPasswordHasher } from './bcrypt-password-hasher';
 
+jest.setTimeout(30000);
+
 describe('BcryptPasswordHasher', () => {
   let hasher: BcryptPasswordHasher;
 

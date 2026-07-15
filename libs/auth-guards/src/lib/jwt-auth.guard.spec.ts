@@ -11,8 +11,10 @@ describe('JwtAuthGuard', () => {
   let mockRequest: any;
   let mockHttpArgumentsHost: any;
 
+  const testSecret = 'test-secret-for-auth-guards';
+
   beforeEach(() => {
-    jwtService = new JwtService({ secret: 'test-secret' });
+    jwtService = new JwtService({ secret: testSecret });
     guard = new JwtAuthGuard(jwtService);
 
     mockRequest = {
@@ -34,7 +36,7 @@ describe('JwtAuthGuard', () => {
   });
 
   describe('canActivate', () => {
-    it('should return true for a valid Bearer token', async () => {
+    it('should return true for a valid Bearer token and attach decoded payload', async () => {
       const validToken = jwtService.sign({
         sub: 'user-1',
         email: 'test@example.com',
@@ -51,6 +53,7 @@ describe('JwtAuthGuard', () => {
       expect(mockRequest.user.sub).toBe('user-1');
       expect(mockRequest.user.email).toBe('test@example.com');
       expect(mockRequest.user.roles).toEqual(['EMPLOYEE']);
+      expect(mockRequest.user.companyId).toBe('company-1');
     });
 
     it('should throw UnauthorizedException when no Authorization header is present', async () => {
@@ -67,7 +70,7 @@ describe('JwtAuthGuard', () => {
       );
     });
 
-    it('should throw UnauthorizedException for an invalid token (bad signature)', async () => {
+    it('should throw UnauthorizedException for an invalid token (wrong signature)', async () => {
       const badToken = jwtService.sign(
         { sub: 'user-1' },
         { secret: 'different-secret' },
@@ -83,7 +86,7 @@ describe('JwtAuthGuard', () => {
     it('should throw UnauthorizedException for an expired token', async () => {
       const expiredToken = jwtService.sign(
         { sub: 'user-1', email: 'test@example.com', roles: [], companyId: 'c1' },
-        { expiresIn: '0s' },
+        { secret: testSecret, expiresIn: '0s' },
       );
 
       mockRequest.headers.authorization = `Bearer ${expiredToken}`;
@@ -93,8 +96,8 @@ describe('JwtAuthGuard', () => {
       );
     });
 
-    it('should throw UnauthorizedException for a malformed token', async () => {
-      mockRequest.headers.authorization = 'Bearer not-a-valid-token';
+    it('should throw UnauthorizedException for a malformed token string', async () => {
+      mockRequest.headers.authorization = 'Bearer not-a-valid-jwt-token';
 
       await expect(guard.canActivate(mockContext)).rejects.toThrow(
         UnauthorizedException,

@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from '@payroll/auth-guards';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PayrollJobProjection } from '../../infrastructure/mongoose/payroll-job.schema';
@@ -10,7 +11,13 @@ import { PayrollJobProjection } from '../../infrastructure/mongoose/payroll-job.
  * Provides read-only endpoints to retrieve denormalized payroll job data
  * from the MongoDB projection store. All endpoints filter by `companyId`
  * for multi-tenancy.
+ *
+ * ## Security
+ * All endpoints require JWT authentication via Bearer token.
  */
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Missing or invalid JWT token' })
+@UseGuards(JwtAuthGuard)
 @ApiTags('Projections - Jobs')
 @Controller('api/projections/jobs')
 export class JobsController {

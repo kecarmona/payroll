@@ -8,17 +8,22 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
   ApiQuery,
   ApiTags,
+  ApiUnauthorizedResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
+import { JwtAuthGuard, RolesGuard, Roles } from '@payroll/auth-guards';
 import { CreateEmployeeHandler, CreateEmployeeCommand } from '../application/create-employee.command';
 import { UpdateEmployeeHandler, UpdateEmployeeCommand } from '../application/update-employee.command';
 import { ChangeSalaryHandler, ChangeSalaryCommand } from '../application/change-salary.command';
@@ -38,7 +43,16 @@ import { EmployeeResponseDto } from './dto/employee-response.dto';
  *
  * All endpoints are grouped under `/employees` and documented
  * with OpenAPI/Swagger decorators for API exploration.
+ *
+ * ## Security
+ * All endpoints require JWT authentication via Bearer token.
+ * Write operations (POST, PATCH) require HR or ADMIN role.
+ * Read operations (GET) are accessible to authenticated EMPLOYEE, HR, and ADMIN roles.
  */
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: 'Missing or invalid JWT token' })
+@ApiForbiddenResponse({ description: 'Insufficient role permissions' })
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('Employees')
 @Controller('employees')
 export class EmployeeController {
@@ -58,6 +72,7 @@ export class EmployeeController {
    * department, and company. Returns the new employee's unique identifier.
    */
   @Post()
+  @Roles('HR', 'ADMIN')
   @ApiOperation({
     summary: 'Register a new employee',
     description:
@@ -98,6 +113,7 @@ export class EmployeeController {
    * optional — only provided fields are updated.
    */
   @Patch(':id')
+  @Roles('HR', 'ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Update employee personal data',
@@ -129,6 +145,7 @@ export class EmployeeController {
    * and must not be terminated.
    */
   @Patch(':id/salary')
+  @Roles('HR', 'ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Change employee salary',
@@ -155,6 +172,7 @@ export class EmployeeController {
    * already-terminated employee is a no-op.
    */
   @Post(':id/terminate')
+  @Roles('HR', 'ADMIN')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Terminate employee',
@@ -176,6 +194,7 @@ export class EmployeeController {
    * Returns the full employee data for the given identifier.
    */
   @Get(':id')
+  @Roles('EMPLOYEE', 'HR', 'ADMIN')
   @ApiOperation({
     summary: 'Get employee by ID',
     description: 'Returns the full employee data for the given unique identifier.',
@@ -209,6 +228,7 @@ export class EmployeeController {
    * Returns all employees belonging to the specified company.
    */
   @Get()
+  @Roles('EMPLOYEE', 'HR', 'ADMIN')
   @ApiOperation({
     summary: 'List employees by company',
     description: 'Returns all employees belonging to the specified company.',

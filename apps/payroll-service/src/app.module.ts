@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { AuthGuardsModule } from '@payroll/auth-guards';
 import { TransactionalOutboxModule } from '@payroll/transactional-outbox';
 import { HealthController } from './health.controller';
 import { PayrollModule, PAYROLL_PERIOD_REPOSITORY_TOKEN, PAYROLL_JOB_REPOSITORY_TOKEN, IDEMPOTENCY_STORE_TOKEN } from './infrastructure/payroll.module';
@@ -27,6 +29,7 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST ?? 'localhost',
@@ -37,6 +40,7 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
       autoLoadEntities: true,
       synchronize: process.env.NODE_ENV !== 'production',
     }),
+    AuthGuardsModule,
     PayrollModule,
     TransactionalOutboxModule.forRoot(),
   ],
