@@ -14,7 +14,7 @@ export class TypeOrmPayrollPeriodEntity {
   id!: string;
 
   /** Tenant (company) this period belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** The month (1-12) this payroll period covers. */
@@ -26,11 +26,11 @@ export class TypeOrmPayrollPeriodEntity {
   year!: number;
 
   /** The start date of the payroll period (ISO string). */
-  @Column()
+  @Column('varchar')
   startDate!: string;
 
   /** The end date of the payroll period (ISO string). */
-  @Column()
+  @Column('varchar')
   endDate!: string;
 
   /** Whether the period is closed for modifications. */

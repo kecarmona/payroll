@@ -13,7 +13,7 @@ export class TypeOrmIdempotencyEntity {
   key!: string;
 
   /** SHA-256 hash of the request payload for conflict detection. */
-  @Column()
+  @Column('varchar')
   requestHash!: string;
 
   /** HTTP status code from the original response. */

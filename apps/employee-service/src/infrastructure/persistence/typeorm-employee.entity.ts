@@ -18,19 +18,19 @@ export class TypeOrmEmployeeEntity {
   id!: string;
 
   /** Tenant (company) this employee belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** Email address — nullable for auto-provisioned users. */
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   email!: string;
 
   /** Employee's full name. */
-  @Column()
+  @Column('varchar')
   name!: string;
 
   /** Employee's position/job title. */
-  @Column()
+  @Column('varchar')
   position!: string;
 
   /** Salary amount in cents (integer). */
@@ -38,15 +38,15 @@ export class TypeOrmEmployeeEntity {
   salaryAmount!: number;
 
   /** ISO 4217 three-letter currency code (e.g. 'USD', 'EUR'). */
-  @Column({ length: 3 })
+  @Column({ type: 'varchar', length: 3 })
   salaryCurrency!: string;
 
   /** Department the employee belongs to. */
-  @Column()
+  @Column('varchar')
   department!: string;
 
   /** Employment status — 'ACTIVE' or 'TERMINATED'. */
-  @Column({ default: 'ACTIVE' })
+  @Column({ type: 'varchar', default: 'ACTIVE' })
   status!: string;
 
   /** Optimistic concurrency version — incremented on every save. */

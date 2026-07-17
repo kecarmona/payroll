@@ -49,21 +49,30 @@ export class KafkaConsumerService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleInit(): Promise<void> {
-    await this.consumer.connect();
-    await this.consumer.subscribe({
-      topic: this.config.topic,
-      fromBeginning: true,
-    });
+    try {
+      await this.consumer.connect();
+      await this.consumer.subscribe({
+        topic: this.config.topic,
+        fromBeginning: true,
+      });
 
-    await this.consumer.run({
-      eachMessage: async (payload: EachMessagePayload) =>
-        this.processMessage(payload),
-    });
+      await this.consumer.run({
+        eachMessage: async (payload: EachMessagePayload) =>
+          this.processMessage(payload),
+      });
 
-    this.isRunning = true;
-    this.logger.log(
-      `Kafka consumer connected to ${this.config.broker}, subscribed to "${this.config.topic}"`,
-    );
+      this.isRunning = true;
+      this.logger.log(
+        `Kafka consumer connected to ${this.config.broker}, subscribed to "${this.config.topic}"`,
+      );
+    } catch (error) {
+      this.logger.error(
+        `Failed to connect to Kafka at ${this.config.broker}: ${(error as Error).message}`,
+      );
+      this.logger.warn(
+        'Kafka consumer will retry on next application restart. Service continues without event processing.',
+      );
+    }
   }
 
   async onModuleDestroy(): Promise<void> {

@@ -14,11 +14,11 @@ export class TypeOrmEmailDeliveryEntity {
   id = '';
 
   /** The recipient email address. */
-  @Column()
+  @Column('varchar')
   to = '';
 
   /** The email subject line. */
-  @Column()
+  @Column('varchar')
   subject = '';
 
   /** The email body content. */
@@ -26,11 +26,11 @@ export class TypeOrmEmailDeliveryEntity {
   body = '';
 
   /** The current delivery status (PENDING, SENT, FAILED). */
-  @Column()
+  @Column('varchar')
   status: EmailStatus = 'PENDING' as EmailStatus;
 
   /** The tenant (company) this email belongs to. */
-  @Column({ name: 'company_id' })
+  @Column({ name: 'company_id', type: 'varchar' })
   companyId = '';
 
   /** Record creation timestamp. */

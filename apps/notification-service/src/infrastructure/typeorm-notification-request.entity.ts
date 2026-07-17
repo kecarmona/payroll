@@ -14,23 +14,23 @@ export class TypeOrmNotificationRequestEntity {
   id = '';
 
   /** The domain event ID that triggered this notification. */
-  @Column({ name: 'event_id' })
+  @Column({ name: 'event_id', type: 'varchar' })
   eventId = '';
 
   /** The notification channel type (e.g. 'EMAIL'). */
-  @Column()
+  @Column('varchar')
   type = '';
 
   /** The target recipient identifier. */
-  @Column({ name: 'recipient_id' })
+  @Column({ name: 'recipient_id', type: 'varchar' })
   recipientId = '';
 
   /** The current delivery status (PENDING, SENT, FAILED). */
-  @Column()
+  @Column('varchar')
   status: NotificationStatus = 'PENDING' as NotificationStatus;
 
   /** The tenant (company) this notification belongs to. */
-  @Column({ name: 'company_id' })
+  @Column({ name: 'company_id', type: 'varchar' })
   companyId = '';
 
   /** Record creation timestamp. */

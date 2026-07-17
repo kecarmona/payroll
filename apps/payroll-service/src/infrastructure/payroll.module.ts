@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OUTBOX_STORE_TOKEN } from '@payroll/transactional-outbox';
 import { TypeOrmOutboxEntity } from '@payroll/transactional-outbox';
 import { TypeOrmPayrollPeriodEntity } from './persistence/typeorm-payroll-period.entity';
 import { TypeOrmPayrollJobEntity } from './persistence/typeorm-payroll-job.entity';
@@ -71,7 +70,6 @@ export const IDEMPOTENCY_STORE_TOKEN = 'IdempotencyStore';
     PAYROLL_PERIOD_REPOSITORY_TOKEN,
     PAYROLL_JOB_REPOSITORY_TOKEN,
     IDEMPOTENCY_STORE_TOKEN,
-    OUTBOX_STORE_TOKEN,
   ],
 })
 export class PayrollModule {}

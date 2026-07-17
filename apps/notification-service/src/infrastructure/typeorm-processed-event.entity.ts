@@ -16,7 +16,7 @@ export class TypeOrmProcessedEventEntity {
   id = '';
 
   /** The notification request ID created for this event. */
-  @Column({ name: 'notification_id' })
+  @Column({ name: 'notification_id', type: 'varchar' })
   notificationId = '';
 
   /** Record creation timestamp. */

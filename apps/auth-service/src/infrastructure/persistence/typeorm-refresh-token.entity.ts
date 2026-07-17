@@ -26,11 +26,11 @@ export class TypeOrmRefreshTokenEntity {
   id!: string;
 
   /** The user this refresh token belongs to. */
-  @Column()
+  @Column('varchar')
   userId!: string;
 
   /** SHA-256 hash of the raw refresh token value. */
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   tokenHash!: string;
 
   /** When this token expires. */
@@ -38,7 +38,7 @@ export class TypeOrmRefreshTokenEntity {
   expiresAt!: Date;
 
   /** The tenant (company) this token belongs to. */
-  @Column({ default: '' })
+  @Column({ type: 'varchar', default: '' })
   companyId!: string;
 
   /** Whether this token has been revoked (used or invalidated). */

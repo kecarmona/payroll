@@ -17,11 +17,11 @@ export class TypeOrmOutboxEntity {
   id = '';
 
   /** The domain event type string (e.g. 'PayrollJobCreated'). */
-  @Column()
+  @Column('varchar')
   eventType = '';
 
   /** The aggregate ID that produced this event. */
-  @Column()
+  @Column('varchar')
   aggregateId = '';
 
   /** The event payload stored as JSONB. */

@@ -4,6 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
 import { ObservabilityModule, MetricsController } from '@payroll/observability';
+import { TransactionalOutboxModule } from '@payroll/transactional-outbox';
 import { HealthController } from './health.controller';
 import {
   NotificationModule,
@@ -38,6 +39,7 @@ import { OUTBOX_STORE_TOKEN } from '@payroll/transactional-outbox';
     }),
     AuthGuardsModule,
     NotificationModule,
+    TransactionalOutboxModule.forRoot(),
     ObservabilityModule,
   ],
   controllers: [HealthController, MetricsController],

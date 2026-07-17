@@ -31,19 +31,19 @@ export class TypeOrmAuditRecordEntity {
   id!: string;
 
   /** Source event ID — unique index for idempotency. */
-  @Column()
+  @Column('varchar')
   eventId!: string;
 
   /** Machine-readable event type name (e.g. "PayrollJobCreated"). */
-  @Column()
+  @Column('varchar')
   eventType!: string;
 
   /** Tenant (company) this record belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** Workflow-level correlation identifier. */
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   correlationId!: string;
 
   /** Redacted payload stored as JSON. */

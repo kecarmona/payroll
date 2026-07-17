@@ -14,15 +14,15 @@ export class TypeOrmPayrollJobEntity {
   id!: string;
 
   /** Tenant (company) this job belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** The payroll period this job targets. */
-  @Column()
+  @Column('varchar')
   periodId!: string;
 
   /** Current status: CREATED, PROCESSING, COMPLETED, or FAILED. */
-  @Column({ default: 'CREATED' })
+  @Column({ type: 'varchar', default: 'CREATED' })
   status!: string;
 
   /** Optimistic concurrency version — incremented on every save. */

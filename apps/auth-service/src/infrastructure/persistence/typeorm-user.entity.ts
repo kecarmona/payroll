@@ -19,11 +19,11 @@ export class TypeOrmUserEntity {
   id!: string;
 
   /** Unique email address used for authentication. */
-  @Column({ unique: true })
+  @Column({ type: 'varchar', unique: true })
   email!: string;
 
   /** Bcrypt hash of the user's password. */
-  @Column()
+  @Column('varchar')
   passwordHash!: string;
 
   /**
@@ -34,7 +34,7 @@ export class TypeOrmUserEntity {
   roles!: string[];
 
   /** Tenant (company) this user belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** Whether the user account is active. */

@@ -13,23 +13,23 @@ export class TypeOrmPayslipEntity {
   id!: string;
 
   /** The transaction this payslip is for. */
-  @Column()
+  @Column('varchar')
   transactionId!: string;
 
   /** The parent payroll job identifier. */
-  @Column()
+  @Column('varchar')
   jobId!: string;
 
   /** The employee this payslip is for. */
-  @Column()
+  @Column('varchar')
   employeeId!: string;
 
   /** The tenant (company) this payslip belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** The payroll period identifier. */
-  @Column()
+  @Column('varchar')
   periodId!: string;
 
   /** Gross pay in cents. */
@@ -45,7 +45,7 @@ export class TypeOrmPayslipEntity {
   netPayCents!: number;
 
   /** ISO 4217 currency code. */
-  @Column()
+  @Column('varchar')
   currency!: string;
 
   /** Timestamp when the payslip was generated. */

@@ -14,23 +14,23 @@ export class TypeOrmPayrollTransactionEntity {
   id!: string;
 
   /** Tenant (company) this transaction belongs to. */
-  @Column()
+  @Column('varchar')
   companyId!: string;
 
   /** The parent payroll job identifier. */
-  @Column()
+  @Column('varchar')
   jobId!: string;
 
   /** The employee this transaction is for. */
-  @Column()
+  @Column('varchar')
   employeeId!: string;
 
   /** The payroll period identifier. */
-  @Column()
+  @Column('varchar')
   periodId!: string;
 
   /** Current status: PENDING, PROCESSING, COMPLETED, or FAILED. */
-  @Column({ default: 'PENDING' })
+  @Column({ type: 'varchar', default: 'PENDING' })
   status!: string;
 
   /** Gross pay in cents (nullable until calculation). */
@@ -46,7 +46,7 @@ export class TypeOrmPayrollTransactionEntity {
   netPayCents: number | null = null;
 
   /** ISO 4217 currency code (nullable until calculation). */
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   currency: string | null = null;
 
   /** Optimistic concurrency version — incremented on every save. */
