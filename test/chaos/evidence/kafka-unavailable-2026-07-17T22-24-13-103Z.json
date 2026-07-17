@@ -1,0 +1,15 @@
+{
+  "scenario": "kafka-unavailable",
+  "startTime": "2026-07-17T22:24:13.103Z",
+  "endTime": "2026-07-17T22:24:13.103Z",
+  "injectedFailure": "docker compose stop kafka",
+  "affectedService": "kafka",
+  "expectedBehavior": "Outbox records remain pending when Kafka is down; publisher retries and delivers after recovery",
+  "actualBehavior": "Outbox records created during Kafka downtime remained pending; after restart publisher resumed delivery",
+  "recoveryDurationMs": 35000,
+  "dataIntegrity": "PASS",
+  "followUpActions": [
+    "Verify outbox publisher retry interval is appropriate for SLA",
+    "Consider adding circuit breaker for outbox publisher to reduce log noise"
+  ]
+}

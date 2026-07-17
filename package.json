@@ -19,6 +19,7 @@
     "serve:email": "nx serve email-service",
     "serve:audit": "nx serve audit-service",
     "test:e2e": "npx jest --config test/e2e/jest.config.ts --forceExit",
+    "test:chaos": "npx jest --config test/chaos/jest.config.ts --forceExit",
     "test:perf:create-payroll-job": "k6 run k6/scenarios/create-payroll-job.js",
     "test:perf:process-large-payroll": "k6 run k6/scenarios/process-large-payroll.js",
     "test:perf:dashboard-reads": "k6 run k6/scenarios/dashboard-reads.js",

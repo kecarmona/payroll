@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/chaos-tests",
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["**/*.ts"]
+}

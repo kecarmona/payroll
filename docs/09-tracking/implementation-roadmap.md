@@ -692,21 +692,21 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-performance-tests`
+- [x] `add-performance-tests`
 - [ ] `add-chaos-tests`
 
 Tasks:
 
-- [ ] Add load test for payroll job creation.
-- [ ] Add load test for 1,000 employee payroll job.
-- [ ] Add dashboard read load test.
+- [x] Add load test for payroll job creation.
+- [x] Add load test for 1,000 employee payroll job.
+- [x] Add dashboard read load test.
 - [ ] Add Kafka unavailable failure test.
 - [ ] Add PostgreSQL unavailable failure test.
 - [ ] Add MongoDB unavailable failure test.
 - [ ] Add duplicate Kafka message failure test.
 - [ ] Add consumer crash recovery test.
-- [ ] Document measured baselines.
-- [ ] Document bottlenecks and follow-up tasks.
+- [x] Document measured baselines.
+- [x] Document bottlenecks and follow-up tasks.
 
 Exit criteria:
 
@@ -772,7 +772,7 @@ Suggested order:
 19. `harden-service-security`
 20. `add-observability`
 21. `validate-end-to-end-payroll-workflow`
-22. `add-performance-tests`
+22. `add-performance-tests` ✅
 23. `add-chaos-tests`
 
 ---
@@ -818,4 +818,4 @@ Do not:
 | 13 | Security Hardening | ✅ Complete |
 | 14 | Observability | ✅ Complete |
 | 15 | End-to-End Workflow | ✅ Complete |
-| 16 | Performance and Chaos Validation | Not started |
+| 16 | Performance and Chaos Validation | In Progress |

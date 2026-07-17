@@ -1,0 +1,16 @@
+{
+  "scenario": "duplicate-message",
+  "startTime": "2026-07-17T22:22:31.625Z",
+  "endTime": "2026-07-17T22:22:31.625Z",
+  "injectedFailure": "Duplicate PayrollJobCreated event produced directly to Kafka",
+  "affectedService": "payroll-processing-service (consumer)",
+  "expectedBehavior": "Consumer returns no-op for duplicate eventId; no duplicate transactions or payslips created",
+  "actualBehavior": "Duplicate event was produced and consumed; transaction and payslip counts remained unchanged",
+  "recoveryDurationMs": 10000,
+  "dataIntegrity": "PASS",
+  "followUpActions": [
+    "Verify idempotency key comparison in consumer uses eventId",
+    "Confirm processed_events table has unique constraint or application-level dedup",
+    "Test with replayed PayslipGenerated events (not just PayrollJobCreated)"
+  ]
+}
