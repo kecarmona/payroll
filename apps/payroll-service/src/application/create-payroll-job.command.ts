@@ -18,6 +18,7 @@ export class CreatePayrollJobCommand {
     public readonly companyId: string,
     public readonly periodId: string,
     public readonly idempotencyKey: string,
+    public readonly employeeIds: string[] = [],
   ) {}
 }
 
@@ -93,7 +94,7 @@ export class CreatePayrollJobHandler {
       }
 
       // Create domain aggregate
-      const job = PayrollJob.create(command.companyId, command.periodId);
+      const job = PayrollJob.create(command.companyId, command.periodId, command.employeeIds);
       const events = job.pullEvents();
 
       // Compute request hash for idempotency

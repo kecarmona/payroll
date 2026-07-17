@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EventEnvelope } from '@payroll/contracts';
 import { PayrollJobHandler } from '../../application/handlers/payroll-job.handler';
+import { PayrollJobCompletedHandler } from '../../application/handlers/payroll-job-completed.handler';
 import { TransactionHandler } from '../../application/handlers/transaction.handler';
 import { PayslipHandler } from '../../application/handlers/payslip.handler';
 
@@ -14,6 +15,7 @@ import { PayslipHandler } from '../../application/handlers/payslip.handler';
  *
  * Supported event types:
  * - `PayrollJobCreated` → {@link PayrollJobHandler}
+ * - `PayrollJobCompleted` → {@link PayrollJobCompletedHandler}
  * - `PayrollTransactionCompleted` → {@link TransactionHandler}
  * - `PayrollTransactionFailed` → {@link TransactionHandler}
  * - `PayslipGenerated` → {@link PayslipHandler}
@@ -24,6 +26,7 @@ export class ProjectionConsumerService {
 
   constructor(
     private readonly payrollJobHandler: PayrollJobHandler,
+    private readonly payrollJobCompletedHandler: PayrollJobCompletedHandler,
     private readonly transactionHandler: TransactionHandler,
     private readonly payslipHandler: PayslipHandler,
   ) {}
@@ -37,6 +40,10 @@ export class ProjectionConsumerService {
     switch (event.eventType) {
       case 'PayrollJobCreated':
         await this.payrollJobHandler.handle(event as never);
+        break;
+
+      case 'PayrollJobCompleted':
+        await this.payrollJobCompletedHandler.handle(event as never);
         break;
 
       case 'PayrollTransactionCompleted':

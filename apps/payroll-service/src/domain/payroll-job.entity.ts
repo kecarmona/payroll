@@ -56,7 +56,7 @@ export class PayrollJob extends AggregateRoot<string> {
    * @param periodId  - The payroll period this job targets.
    * @returns A new PayrollJob instance with CREATED status and a recorded event.
    */
-  static create(companyId: string, periodId: string): PayrollJob {
+  static create(companyId: string, periodId: string, employeeIds: string[] = []): PayrollJob {
     const id = PayrollJobId.create();
     const job = new PayrollJob(
       id.toString(),
@@ -71,6 +71,7 @@ export class PayrollJob extends AggregateRoot<string> {
         jobId: job.id,
         companyId: job.companyId,
         periodId: job._periodId,
+        employeeIds,
         timestamp: new Date().toISOString(),
       }),
     );

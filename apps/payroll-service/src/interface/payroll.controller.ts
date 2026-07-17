@@ -145,6 +145,7 @@ export class PayrollController {
       dto.companyId,
       dto.periodId,
       'resolved-by-guard', // The guard already validated idempotency
+      dto.employeeIds ?? [],
     );
     const result = await this.createPayrollJobHandler.execute(command);
     return result;

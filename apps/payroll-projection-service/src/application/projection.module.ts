@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ProjectionMongooseModule } from '../infrastructure/mongoose/projection-mongoose.module';
 import { IdempotencyService } from './idempotency.service';
 import { PayrollJobHandler } from './handlers/payroll-job.handler';
+import { PayrollJobCompletedHandler } from './handlers/payroll-job-completed.handler';
 import { TransactionHandler } from './handlers/transaction.handler';
 import { PayslipHandler } from './handlers/payslip.handler';
 
@@ -11,6 +12,7 @@ import { PayslipHandler } from './handlers/payslip.handler';
  * Provides:
  * - {@link IdempotencyService} — idempotency checks across projection collections
  * - {@link PayrollJobHandler} — handles PayrollJobCreated events
+ * - {@link PayrollJobCompletedHandler} — handles PayrollJobCompleted events
  * - {@link TransactionHandler} — handles Completed/Failed events
  * - {@link PayslipHandler} — handles PayslipGenerated events
  *
@@ -21,9 +23,10 @@ import { PayslipHandler } from './handlers/payslip.handler';
   providers: [
     IdempotencyService,
     PayrollJobHandler,
+    PayrollJobCompletedHandler,
     TransactionHandler,
     PayslipHandler,
   ],
-  exports: [PayrollJobHandler, TransactionHandler, PayslipHandler],
+  exports: [PayrollJobHandler, PayrollJobCompletedHandler, TransactionHandler, PayslipHandler],
 })
 export class ProjectionModule {}

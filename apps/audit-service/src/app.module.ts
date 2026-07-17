@@ -6,6 +6,7 @@ import { AuthGuardsModule } from '@payroll/auth-guards';
 import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import { AuditModule } from './infrastructure/audit.module';
+import { AuditKafkaConsumerService } from './interface/kafka/audit-kafka-consumer.service';
 
 /**
  * Root application module for the Audit Service.
@@ -14,7 +15,7 @@ import { AuditModule } from './infrastructure/audit.module';
  * - Environment variable loading via `@nestjs/config`
  * - TypeORM connection to PostgreSQL for audit data persistence
  * - Audit domain infrastructure (repositories, redaction, event handling)
- * - Kafka consumer for the `audit.events` topic
+ * - Kafka consumer for the `payroll.events` topic via {@link AuditKafkaConsumerService}
  *
  * The audit service is **append-only** — it writes audit records and
  * idempotency markers, but exposes no REST endpoints other than health.
@@ -38,6 +39,7 @@ import { AuditModule } from './infrastructure/audit.module';
     ObservabilityModule,
   ],
   controllers: [HealthController, MetricsController],
+  providers: [AuditKafkaConsumerService],
 })
 export class AppModule {}
 

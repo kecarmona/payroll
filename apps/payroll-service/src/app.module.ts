@@ -14,6 +14,7 @@ import { CreatePayrollJobHandler } from './application/create-payroll-job.comman
 import { GetPayrollJobHandler } from './application/queries/get-payroll-job.query';
 import { ListPayrollPeriodsHandler } from './application/queries/list-payroll-periods.query';
 import { IdempotencyGuard } from './interface/guards/idempotency.guard';
+import { OutboxPublisherService } from './infrastructure/outbox-publisher.service';
 
 /**
  * Root application module for the Payroll Service.
@@ -49,6 +50,7 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
   controllers: [HealthController, PayrollController, MetricsController],
   providers: [
     IdempotencyGuard,
+    OutboxPublisherService,
     // Application command handlers — injected with infrastructure implementations
     {
       provide: CreatePayrollPeriodHandler,

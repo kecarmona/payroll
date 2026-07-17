@@ -4,11 +4,13 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthGuardsModule } from '@payroll/auth-guards';
 import { ObservabilityModule, MetricsController } from '@payroll/observability';
+import type { EventDeserializer } from '@payroll/event-bus';
 import { HealthController } from './health.controller';
 import { ProjectionModule } from './application/projection.module';
 import { ProjectionMongooseModule } from './infrastructure/mongoose/projection-mongoose.module';
 import { InterfaceModule } from './interface/interface.module';
 import { ProjectionConsumerService } from './interface/kafka/projection-consumer.service';
+import { ProjectionKafkaConsumerService } from './interface/kafka/projection-kafka-consumer.service';
 
 /**
  * Root application module for the Payroll Projection Service.
@@ -37,19 +39,14 @@ import { ProjectionConsumerService } from './interface/kafka/projection-consumer
     ObservabilityModule,
   ],
   controllers: [HealthController, MetricsController],
-  providers: [],
+  providers: [
+    ProjectionKafkaConsumerService,
+    {
+      provide: 'EventDeserializer',
+      useFactory: (): EventDeserializer => ({
+        deserialize: <T>(data: Buffer) => JSON.parse(data.toString()) as T,
+      }),
+    },
+  ],
 })
-export class AppModule implements OnModuleInit {
-  constructor(
-    private readonly projectionConsumer: ProjectionConsumerService,
-  ) {}
-
-  /**
-   * Lifecycle hook that runs after all modules are initialized.
-   * Currently used for future Kafka consumer integration.
-   */
-  async onModuleInit(): Promise<void> {
-    // Kafka consumer integration will be added here when the
-    // Kafka infrastructure module is available.
-  }
-}
+export class AppModule {}

@@ -14,6 +14,8 @@ export interface PayrollJobCreatedPayload {
   readonly companyId: string;
   /** The payroll period identifier this job targets. */
   readonly periodId: string;
+  /** Employee IDs to process in this job. */
+  readonly employeeIds: string[];
   /** ISO timestamp when the job was created. */
   readonly timestamp: string;
 }

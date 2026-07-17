@@ -67,12 +67,18 @@ export class KafkaOutboxPublisher implements OutboxPublisher {
     for (const record of records) {
       try {
         // Build the event envelope for serialization
+        const companyId =
+          typeof record.payload === 'object' &&
+          record.payload !== null &&
+          'companyId' in (record.payload as Record<string, unknown>)
+            ? ((record.payload as Record<string, unknown>).companyId as string)
+            : '';
         const envelope: EventEnvelope = {
           eventId: record.id,
           eventType: record.eventType,
           version: 1,
           timestamp: record.createdAt.toISOString(),
-          companyId: '',
+          companyId,
           correlationId: record.id,
           causationId: record.id,
           producer: 'payroll-service',

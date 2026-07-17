@@ -1,4 +1,4 @@
-import { IsString, MinLength } from 'class-validator';
+import { IsArray, IsOptional, IsString, IsUUID, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 /**
@@ -23,4 +23,14 @@ export class CreatePayrollJobDto {
   @IsString()
   @MinLength(1)
   periodId!: string;
+
+  @ApiProperty({
+    description: 'Employee IDs to include in this payroll job',
+    example: ['550e8400-e29b-41d4-a716-446655440000'],
+    required: false,
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  employeeIds?: string[];
 }

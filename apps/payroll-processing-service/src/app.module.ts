@@ -18,6 +18,7 @@ import { ProcessPayrollJobHandler } from './application/process-payroll-job.comm
 import { ProcessTransactionHandler } from './application/process-transaction.command';
 import { PayrollJobConsumer } from './interface/kafka/payroll-job-consumer';
 import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
+import { OutboxPublisherService } from './infrastructure/outbox-publisher.service';
 
 /**
  * Root application module for the Payroll Processing Service.
@@ -57,11 +58,15 @@ import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
       inject: [
         DataSource,
         PAYROLL_TRANSACTION_REPOSITORY_TOKEN,
+        PAYSLIP_REPOSITORY_TOKEN,
+        PAYROLL_CALCULATION_SERVICE_TOKEN,
         PROCESSED_EVENT_STORE_TOKEN,
       ],
       useFactory: (
         dataSource: unknown,
         transactionRepository: unknown,
+        payslipRepository: unknown,
+        calculationService: unknown,
         processedEventStore: unknown,
       ) =>
         new ProcessPayrollJobHandler(
@@ -69,6 +74,10 @@ import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
           dataSource as any,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           transactionRepository as any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          payslipRepository as any,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          calculationService as any,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           processedEventStore as any,
         ),
@@ -98,6 +107,8 @@ import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
           calculationService as any,
         ),
     },
+    // ── Outbox publisher ────────────────────────────────────────
+    OutboxPublisherService,
     // ── Kafka consumer ──────────────────────────────────────────
     {
       provide: KafkaConsumerService,
