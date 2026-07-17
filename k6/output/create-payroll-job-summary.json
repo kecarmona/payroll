@@ -1,0 +1,85 @@
+{
+  "test": "create-payroll-job",
+  "timestamp": "2026-07-17T18:02:45.038Z",
+  "metrics": {
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 11.326899999999988,
+        "avg": 5.608486180573836,
+        "min": 1.022,
+        "med": 3.973,
+        "max": 377.283,
+        "p(90)": 7.0892
+      },
+      "thresholds": {
+        "p(95)<500": {
+          "ok": true
+        },
+        "p(99)<1000": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_failed": {
+      "values": {
+        "rate": 0.00026322716504343247,
+        "passes": 1,
+        "fails": 3798
+      },
+      "thresholds": {
+        "rate<0.01": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "rate": 80.21161508947912,
+        "count": 3799
+      },
+      "thresholds": {
+        "rate>10": {
+          "ok": true
+        }
+      }
+    },
+    "e2e_flow_duration": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "p(90)": 2.3304,
+        "p(95)": 2.43,
+        "avg": 1.5247246835443022,
+        "min": 0.517,
+        "med": 1.5354999999999999,
+        "max": 2.582
+      }
+    },
+    "job_create_latency": {
+      "values": {
+        "avg": 2.80805063291139,
+        "min": 1.022,
+        "med": 2.029,
+        "max": 42.913,
+        "p(90)": 3.4255000000000004,
+        "p(95)": 6.095049999999997
+      },
+      "type": "trend",
+      "contains": "default"
+    }
+  },
+  "thresholds": {
+    "p(95)<500": {
+      "ok": true
+    },
+    "p(99)<1000": {
+      "ok": true
+    }
+  }
+}

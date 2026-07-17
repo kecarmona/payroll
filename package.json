@@ -18,7 +18,12 @@
     "serve:notification": "nx serve notification-service",
     "serve:email": "nx serve email-service",
     "serve:audit": "nx serve audit-service",
-    "test:e2e": "npx jest --config test/e2e/jest.config.ts --forceExit"
+    "test:e2e": "npx jest --config test/e2e/jest.config.ts --forceExit",
+    "test:perf:create-payroll-job": "k6 run k6/scenarios/create-payroll-job.js",
+    "test:perf:process-large-payroll": "k6 run k6/scenarios/process-large-payroll.js",
+    "test:perf:dashboard-reads": "k6 run k6/scenarios/dashboard-reads.js",
+    "test:perf:dry-run": "k6 deps k6/scenarios/create-payroll-job.js && k6 deps k6/scenarios/process-large-payroll.js && k6 deps k6/scenarios/dashboard-reads.js",
+    "test:perf:all": "k6 run k6/scenarios/create-payroll-job.js --summary-export=k6/output/create-payroll-job-summary.json && k6 run k6/scenarios/dashboard-reads.js --summary-export=k6/output/dashboard-reads-summary.json && k6 run k6/scenarios/process-large-payroll.js --summary-export=k6/output/process-large-payroll-summary.json"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.2",

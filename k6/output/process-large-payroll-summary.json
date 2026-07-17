@@ -1,0 +1,81 @@
+{
+  "test": "process-large-payroll",
+  "timestamp": "2026-07-17T18:18:22.647Z",
+  "config": {
+    "employeeCount": 1000,
+    "processingTimeout": 120,
+    "employeeBatchSize": 50
+  },
+  "metrics": {
+    "http_req_duration": {
+      "values": {
+        "max": 248.657,
+        "p(90)": 7.215800000000001,
+        "p(95)": 9.174999999999999,
+        "avg": 5.371217840375591,
+        "min": 1.555,
+        "med": 4.563
+      },
+      "thresholds": {
+        "avg<2000": {
+          "ok": true
+        },
+        "max<30000": {
+          "ok": true
+        }
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 1065
+      },
+      "thresholds": {
+        "rate<0.01": {
+          "ok": true
+        }
+      }
+    },
+    "setup_duration_seconds": {
+      "contains": "default",
+      "values": {
+        "p(95)": 1.192,
+        "avg": 1.192,
+        "min": 1.192,
+        "med": 1.192,
+        "max": 1.192,
+        "p(90)": 1.192
+      },
+      "type": "trend"
+    },
+    "job_create_duration_seconds": {
+      "values": {
+        "avg": 0.012308,
+        "min": 0.012308,
+        "med": 0.012308,
+        "max": 0.012308,
+        "p(90)": 0.012308,
+        "p(95)": 0.012308
+      },
+      "type": "trend",
+      "contains": "default"
+    },
+    "transaction_count": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "min": 367,
+        "med": 367,
+        "max": 367,
+        "p(90)": 367,
+        "p(95)": 367,
+        "avg": 367
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "test": "dashboard-reads",
+  "timestamp": "2026-07-17T18:04:22.186Z",
+  "config": {
+    "concurrentVUs": 100,
+    "employeeCount": 1000,
+    "stages": [
+      {
+        "duration": "15s",
+        "target": 100
+      },
+      {
+        "duration": "60s",
+        "target": 100
+      },
+      {
+        "duration": "5s",
+        "target": 0
+      }
+    ]
+  },
+  "metrics": {
+    "http_req_duration": {
+      "thresholds": {
+        "p(95)<300": {
+          "ok": true
+        },
+        "p(99)<500": {
+          "ok": true
+        }
+      },
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 1.177,
+        "max": 334.747,
+        "p(90)": 6.5935000000000015,
+        "p(95)": 10.244,
+        "avg": 3.484313105710452,
+        "min": 0.492
+      }
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 13414
+      },
+      "thresholds": {
+        "rate<0.001": {
+          "ok": true
+        }
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 13414,
+        "rate": 160.68967519841712
+      },
+      "thresholds": {
+        "rate>20": {
+          "ok": true
+        }
+      }
+    }
+  }
+}

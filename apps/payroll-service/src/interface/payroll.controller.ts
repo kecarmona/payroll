@@ -7,8 +7,10 @@ import {
   Param,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -140,11 +142,16 @@ export class PayrollController {
   @ApiConflictResponse({ description: 'Idempotency key reused with different request' })
   async createJob(
     @Body() dto: CreatePayrollJobDto,
+    @Req() request: Request,
   ): Promise<{ jobId: string; status: string }> {
+    const reqExt = request as unknown as Record<string, unknown>;
+    const idempotencyInfo = reqExt.idempotencyInfo as
+      | { key: string; requestHash: string }
+      | undefined;
     const command = new CreatePayrollJobCommand(
       dto.companyId,
       dto.periodId,
-      'resolved-by-guard', // The guard already validated idempotency
+      idempotencyInfo?.key ?? 'unknown',
       dto.employeeIds ?? [],
     );
     const result = await this.createPayrollJobHandler.execute(command);
