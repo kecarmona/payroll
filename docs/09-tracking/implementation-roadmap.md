@@ -651,24 +651,24 @@ References:
 
 OpenSpec changes:
 
-- [ ] `validate-end-to-end-payroll-workflow`
+- [x] `validate-end-to-end-payroll-workflow`
 
 Tasks:
 
-- [ ] Create company test fixture.
-- [ ] Create HR user test fixture.
-- [ ] Create employee test fixtures.
-- [ ] Create payroll period.
-- [ ] Create payroll job.
-- [ ] Publish PayrollJobCreated.
-- [ ] Process payroll transactions.
-- [ ] Generate payslips.
-- [ ] Update projections.
-- [ ] Trigger notifications.
-- [ ] Store audit records.
-- [ ] Assert final job state.
-- [ ] Assert no duplicate transactions.
-- [ ] Assert no duplicate payslips.
+- [x] Create company test fixture.
+- [x] Create HR user test fixture.
+- [x] Create employee test fixtures.
+- [x] Create payroll period.
+- [x] Create payroll job.
+- [x] Publish PayrollJobCreated.
+- [x] Process payroll transactions.
+- [x] Generate payslips.
+- [x] Update projections.
+- [x] Trigger notifications.
+- [x] Store audit records.
+- [x] Assert final job state.
+- [x] Assert no duplicate transactions.
+- [x] Assert no duplicate payslips.
 
 Exit criteria:
 
@@ -817,5 +817,5 @@ Do not:
 | 12 | Audit Service | ✅ Complete |
 | 13 | Security Hardening | ✅ Complete |
 | 14 | Observability | ✅ Complete |
-| 15 | End-to-End Workflow | Not started |
+| 15 | End-to-End Workflow | ✅ Complete |
 | 16 | Performance and Chaos Validation | Not started |
