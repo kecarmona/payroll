@@ -7,7 +7,8 @@
       "@payroll/shared-kernel": ["dist/libs/shared-kernel/src/index"],
       "@payroll/contracts": ["dist/libs/contracts/src/index"],
       "@payroll/event-bus": ["dist/libs/event-bus/src/index"],
-      "@payroll/service-foundation": ["dist/libs/service-foundation/src/index"]
+      "@payroll/service-foundation": ["dist/libs/service-foundation/src/index"],
+      "@payroll/observability": ["dist/libs/observability/src/index"]
     }
   },
   "include": ["src/**/*.ts"],

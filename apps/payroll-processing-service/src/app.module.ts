@@ -4,6 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { TransactionalOutboxModule } from '@payroll/transactional-outbox';
 import { HealthController } from './health.controller';
 import {
@@ -46,8 +47,9 @@ import { KafkaConsumerService } from './interface/kafka/kafka-consumer.service';
     AuthGuardsModule,
     PayrollProcessingModule,
     TransactionalOutboxModule.forRoot(),
+    ObservabilityModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, MetricsController],
   providers: [
     // ── Application command handlers ────────────────────────────
     {

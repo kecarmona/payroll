@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import { ProjectionModule } from './application/projection.module';
 import { ProjectionMongooseModule } from './infrastructure/mongoose/projection-mongoose.module';
@@ -33,8 +34,9 @@ import { ProjectionConsumerService } from './interface/kafka/projection-consumer
     ProjectionMongooseModule,
     ProjectionModule,
     InterfaceModule,
+    ObservabilityModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, MetricsController],
   providers: [],
 })
 export class AppModule implements OnModuleInit {

@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import { EmployeeModule, EMPLOYEE_REPOSITORY_TOKEN, EVENT_PUBLISHER_TOKEN } from './infrastructure/employee.module';
 import { EmployeeController } from './interface/employee.controller';
@@ -39,8 +40,9 @@ import { ListEmployeesHandler } from './application/queries/list-employees.query
     }),
     AuthGuardsModule,
     EmployeeModule,
+    ObservabilityModule,
   ],
-  controllers: [HealthController, EmployeeController],
+  controllers: [HealthController, EmployeeController, MetricsController],
   providers: [
     // Application command handlers — injected with infrastructure implementations
     {

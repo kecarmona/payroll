@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import { EmailModule } from './infrastructure/email.module';
 
@@ -31,8 +32,9 @@ import { EmailModule } from './infrastructure/email.module';
     }),
     AuthGuardsModule,
     EmailModule,
+    ObservabilityModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, MetricsController],
   providers: [],
 })
 export class AppModule {}

@@ -614,20 +614,20 @@ References:
 
 OpenSpec changes:
 
-- [ ] `add-observability`
+- [x] `add-observability`
 
 Tasks:
 
-- [ ] Add structured logging to all services.
-- [ ] Propagate correlationId through HTTP.
-- [ ] Propagate correlationId through Kafka events.
-- [ ] Add request duration metrics.
-- [ ] Add Kafka consumer metrics.
-- [ ] Add outbox metrics.
-- [ ] Add payroll business metrics.
-- [ ] Add DLQ metrics.
-- [ ] Add initial dashboard documentation.
-- [ ] Add alert threshold documentation.
+- [x] Add structured logging to all services (already in service-foundation).
+- [x] Propagate correlationId through HTTP (already in service-foundation).
+- [x] Propagate correlationId through Kafka events (via AsyncLocalStorage).
+- [x] Add request duration metrics (HttpMetricsInterceptor + prometheus).
+- [x] Add Kafka consumer metrics (prometheus counters/histograms).
+- [x] Add outbox metrics (outbox_pending_count gauge).
+- [x] Add payroll business metrics (job duration, transaction failures).
+- [x] Add DLQ metrics (placeholder gauge).
+- [x] Add initial dashboard documentation.
+- [x] Add alert threshold documentation.
 
 Exit criteria:
 
@@ -816,6 +816,6 @@ Do not:
 | 11 | Notification and Email Services | ✅ Complete |
 | 12 | Audit Service | ✅ Complete |
 | 13 | Security Hardening | ✅ Complete |
-| 14 | Observability | Not started |
+| 14 | Observability | ✅ Complete |
 | 15 | End-to-End Workflow | Not started |
 | 16 | Performance and Chaos Validation | Not started |

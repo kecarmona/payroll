@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import { AuditModule } from './infrastructure/audit.module';
 
@@ -34,8 +35,9 @@ import { AuditModule } from './infrastructure/audit.module';
     }),
     AuthGuardsModule,
     AuditModule,
+    ObservabilityModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, MetricsController],
 })
 export class AppModule {}
 

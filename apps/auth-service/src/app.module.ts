@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import { AuthModule } from './infrastructure/auth.module';
 import { AuthController } from './interface/auth.controller';
@@ -46,8 +47,9 @@ import {
     }),
     AuthGuardsModule,
     AuthModule,
+    ObservabilityModule,
   ],
-  controllers: [HealthController, AuthController],
+  controllers: [HealthController, AuthController, MetricsController],
   providers: [
     // Application command handlers — injected with infrastructure implementations
     {

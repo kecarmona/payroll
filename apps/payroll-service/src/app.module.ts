@@ -4,6 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { TransactionalOutboxModule } from '@payroll/transactional-outbox';
 import { HealthController } from './health.controller';
 import { PayrollModule, PAYROLL_PERIOD_REPOSITORY_TOKEN, PAYROLL_JOB_REPOSITORY_TOKEN, IDEMPOTENCY_STORE_TOKEN } from './infrastructure/payroll.module';
@@ -43,8 +44,9 @@ import { IdempotencyGuard } from './interface/guards/idempotency.guard';
     AuthGuardsModule,
     PayrollModule,
     TransactionalOutboxModule.forRoot(),
+    ObservabilityModule,
   ],
-  controllers: [HealthController, PayrollController],
+  controllers: [HealthController, PayrollController, MetricsController],
   providers: [
     IdempotencyGuard,
     // Application command handlers — injected with infrastructure implementations

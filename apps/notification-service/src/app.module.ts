@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuardsModule } from '@payroll/auth-guards';
+import { ObservabilityModule, MetricsController } from '@payroll/observability';
 import { HealthController } from './health.controller';
 import {
   NotificationModule,
@@ -37,8 +38,9 @@ import { OUTBOX_STORE_TOKEN } from '@payroll/transactional-outbox';
     }),
     AuthGuardsModule,
     NotificationModule,
+    ObservabilityModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, MetricsController],
   providers: [
     {
       provide: HandlePayslipGenerated,
