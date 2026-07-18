@@ -429,7 +429,9 @@ export class ChaosOrchestrator extends E2eOrchestrator {
     );
 
     // Wait for the health endpoint to respond
-    const serviceUrl = `http://localhost:${port}/health/live`;
+    // NOTE: apiClient.healthCheck appends config.health.endpoint (/health/live)
+    // automatically, so we pass only the base URL.
+    const serviceUrl = `http://localhost:${port}`;
     await this.waitForServiceHealthy(serviceUrl, timeoutMs);
 
     console.log(
