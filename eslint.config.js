@@ -7,4 +7,9 @@ module.exports = [
   {
     ignores: ['dist/**', 'coverage/**', '.nx/**'],
   },
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    },
+  },
 ];

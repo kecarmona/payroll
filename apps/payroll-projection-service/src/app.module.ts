@@ -1,4 +1,4 @@
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -9,7 +9,6 @@ import { HealthController } from './health.controller';
 import { ProjectionModule } from './application/projection.module';
 import { ProjectionMongooseModule } from './infrastructure/mongoose/projection-mongoose.module';
 import { InterfaceModule } from './interface/interface.module';
-import { ProjectionConsumerService } from './interface/kafka/projection-consumer.service';
 import { ProjectionKafkaConsumerService } from './interface/kafka/projection-kafka-consumer.service';
 
 /**

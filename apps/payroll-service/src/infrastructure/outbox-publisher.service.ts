@@ -8,7 +8,7 @@ const logger = new Logger('OutboxPublisherService');
 
 /** Static topic registry — maps event types to Kafka topics. */
 class StaticTopicRegistry implements TopicRegistry {
-  resolve(eventType: string): string {
+  resolve(_eventType: string): string {
     return 'payroll.events';
   }
 }
