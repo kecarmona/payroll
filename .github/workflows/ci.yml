@@ -176,23 +176,23 @@ jobs:
 
       - name: Start services
         run: |
-          node dist/apps/auth-service/main.js &
-          node dist/apps/employee-service/main.js &
-          node dist/apps/payroll-service/main.js &
-          node dist/apps/payroll-processing-service/main.js &
-          node dist/apps/payroll-projection-service/main.js &
-          node dist/apps/notification-service/main.js &
-          node dist/apps/email-service/main.js &
-          node dist/apps/audit-service/main.js &
-          # Wait for all services to be healthy (max 60s)
+          for svc in auth-service employee-service payroll-service payroll-processing-service payroll-projection-service notification-service email-service audit-service; do
+            npx nx serve "$svc" > "/tmp/$svc.log" 2>&1 &
+            echo "Started $svc (PID $!)"
+          done
+          # Wait for all services to be healthy (max 120s total)
           for port in 3001 3002 3003 3004 3005 3006 3007 3008; do
-            for i in $(seq 1 30); do
+            for i in $(seq 1 60); do
               if curl -sf "http://localhost:$port/health/live" > /dev/null 2>&1; then
                 echo "port $port OK ($((i * 2))s)"
                 break
               fi
-              if [ "$i" -eq 30 ]; then
-                echo "port $port TIMEOUT"
+              if [ "$i" -eq 60 ]; then
+                echo "port $port TIMEOUT — checking logs..."
+                for svc in auth-service employee-service payroll-service payroll-processing-service payroll-projection-service notification-service email-service audit-service; do
+                  echo "--- $svc last 20 lines ---"
+                  tail -20 "/tmp/$svc.log" 2>/dev/null || echo "(no log)"
+                done
               fi
               sleep 2
             done
