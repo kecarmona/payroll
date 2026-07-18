@@ -47,6 +47,8 @@ describe('Chaos: Consumer Crash — Redelivery and Idempotency', () => {
   });
 
   afterAll(async () => {
+    // Restart the killed service so subsequent tests can pass health checks
+    await chaos.startConsumer('payroll-processing-service');
     await chaos.cleanup();
   });
 

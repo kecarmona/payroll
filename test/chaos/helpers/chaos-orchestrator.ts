@@ -392,6 +392,51 @@ export class ChaosOrchestrator extends E2eOrchestrator {
     }
   }
 
+  /**
+   * Starts a previously killed application microservice via `nx serve`.
+   *
+   * Launches `npx nx serve <serviceName>` in the background and polls
+   * the health endpoint until the service responds. This is the inverse
+   * of {@link killConsumer} — use it in `afterAll` to restore state for
+   * subsequent tests.
+   *
+   * @param serviceName - Service name (e.g. "payroll-processing-service").
+   * @param timeoutMs - Maximum time to wait for the service to become healthy
+   *                    (default 120_000, matching CI health check timeout).
+   */
+  async startConsumer(
+    serviceName: string,
+    timeoutMs = 120_000,
+  ): Promise<void> {
+    const port = SERVICE_PORTS[serviceName];
+    if (!port) {
+      throw new Error(
+        `Unknown service "${serviceName}". Valid services: ${Object.keys(SERVICE_PORTS).join(', ')}`,
+      );
+    }
+
+    const projectRoot = path.resolve(__dirname, '..', '..', '..');
+    const logFile = `/tmp/${serviceName}.log`;
+
+    console.log(
+      `[ChaosOrchestrator] Starting ${serviceName} (port ${port})...`,
+    );
+
+    // Launch the service in the background
+    await execAsync(
+      `npx nx serve "${serviceName}" > "${logFile}" 2>&1 &`,
+      { cwd: projectRoot, timeout: 10_000 },
+    );
+
+    // Wait for the health endpoint to respond
+    const serviceUrl = `http://localhost:${port}/health/live`;
+    await this.waitForServiceHealthy(serviceUrl, timeoutMs);
+
+    console.log(
+      `[ChaosOrchestrator] ${serviceName} is healthy on port ${port}`,
+    );
+  }
+
   // ---------------------------------------------------------------
   // Evidence Recording
   // ---------------------------------------------------------------

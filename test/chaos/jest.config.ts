@@ -36,6 +36,8 @@ const config: Config = {
   forceExit: true,
   detectOpenHandles: true,
   verbose: true,
+  /** Run sequentially — chaos tests share infrastructure and background services. */
+  maxWorkers: 1,
   /** Prevent Nx module resolution from interfering with direct imports. */
   moduleNameMapper: {},
 };
