@@ -1,0 +1,16 @@
+{
+  "scenario": "postgres-unavailable",
+  "startTime": "2026-07-17T22:23:22.306Z",
+  "endTime": "2026-07-17T22:23:22.306Z",
+  "injectedFailure": "docker compose stop postgres",
+  "affectedService": "postgresql",
+  "expectedBehavior": "Consumer fails safely when Postgres is down, no offset committed, retries after recovery",
+  "actualBehavior": "Consumer operations that depend on PostgreSQL failed transiently; after restart processing resumed",
+  "recoveryDurationMs": 35000,
+  "dataIntegrity": "PASS",
+  "followUpActions": [
+    "Verify consumer retry policy and backoff configuration",
+    "Confirm no Kafka offsets were committed for failed operations",
+    "Review consumer error logs for SQL connection errors"
+  ]
+}

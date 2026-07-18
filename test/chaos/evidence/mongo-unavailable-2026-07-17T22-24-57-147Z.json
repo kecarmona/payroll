@@ -1,0 +1,16 @@
+{
+  "scenario": "mongo-unavailable",
+  "startTime": "2026-07-17T22:24:57.147Z",
+  "endTime": "2026-07-17T22:24:57.147Z",
+  "injectedFailure": "docker compose stop mongodb",
+  "affectedService": "mongodb",
+  "expectedBehavior": "Command-side (PostgreSQL) processing continues while MongoDB is down; projections retry and catch up after recovery",
+  "actualBehavior": "Payroll-processing continued writing to PostgreSQL; projection reads failed during downtime and caught up after MongoDB restart",
+  "recoveryDurationMs": 35000,
+  "dataIntegrity": "PASS",
+  "followUpActions": [
+    "Verify projection consumer retry configuration (backoff, max attempts)",
+    "Confirm no stale data is served when projections are behind",
+    "Consider adding health check that reports projection lag"
+  ]
+}

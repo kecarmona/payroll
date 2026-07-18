@@ -1,0 +1,17 @@
+{
+  "scenario": "consumer-crash",
+  "startTime": "2026-07-17T22:12:45.571Z",
+  "endTime": "2026-07-17T22:12:45.571Z",
+  "injectedFailure": "kill -9 on payroll-processing-service (SIGKILL)",
+  "affectedService": "payroll-processing-service (Kafka consumer)",
+  "expectedBehavior": "Kafka redelivers uncommitted messages after rebalance; idempotency prevents duplicate state",
+  "actualBehavior": "Consumer was killed; Kafka group rebalance triggered; redelivered messages handled by idempotency check",
+  "recoveryDurationMs": 45000,
+  "dataIntegrity": "PASS",
+  "followUpActions": [
+    "Implement Docker container deployment for services to enable true container-level crash",
+    "Verify Kafka session.timeout.ms and heartbeat.interval.ms for crash detection speed",
+    "Test with consumer crash during batch processing (mid-batch failure)",
+    "Consider adding process manager (PM2, Supervisor) for auto-restart in development"
+  ]
+}

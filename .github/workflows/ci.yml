@@ -1,92 +1,182 @@
-# CI Pipeline — Payroll Monorepo
-#
-# Build, lint, test, and integration-check every push and PR.
-#
-# Prerequisites:
-#   pnpm is NOT globally installed on the runner. We use `npx pnpm@9.15.4` to
-#   install it on demand. This adds ~5 s to the install step but avoids the
-#   maintenance burden of keeping pnpm in the runner image.
-#
-# Integration environment:
-#   The `integration` job starts PostgreSQL, MongoDB, Redis, and Kafka via
-#   `services:` containers. This requires a runner with sufficient RAM — GitHub
-#   free runners (7 GB) may OOM Kafka 3.7 at default heap.
-#   See docs/07-deployment/docker.md for local integration testing instructions.
-#   To enable on a self-hosted or paid runner, remove the `if:` gate below.
-
 name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, feature/*, fix/*]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
+
+env:
+  NODE_VERSION: '22'
+  PNPM_VERSION: '9.15.4'
 
 jobs:
-  build:
+  lint-and-build:
+    name: Lint & Build
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
-        run: npm install -g pnpm@9.15.4
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
-
       - name: Lint
         run: pnpm lint
 
-      - name: Test (unit)
+      - name: Build
+        run: pnpm build
+
+  unit-tests:
+    name: Unit Tests
+    needs: lint-and-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (for test artifacts)
+        run: pnpm build
+
+      - name: Run tests
         run: pnpm test
 
-  integration:
+  integration-tests:
+    name: E2E & Chaos Tests
+    needs: lint-and-build
     runs-on: ubuntu-latest
-    # ── Known limitation ──────────────────────────────────────────────────
-    # GitHub free runners (7 GB RAM) may OOM Kafka at default heap settings.
-    # This job is designed for paid or self-hosted runners. Before enabling,
-    # verify the runner has >= 8 GB available memory.
-    # For local integration testing, run `docker compose up` first.
-    # ──────────────────────────────────────────────────────────────────────
-    if: false
+    timeout-minutes: 30
+
     services:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: payroll
+          POSTGRES_PASSWORD: payroll_secret
+          POSTGRES_DB: payroll
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 5432:5432
+
       mongodb:
         image: mongo:7
         ports:
           - 27017:27017
+        options: >-
+          --health-cmd mongosh --eval "db.adminCommand('ping')"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
       redis:
         image: redis:7
         ports:
           - 6379:6379
-      kafka:
-        image: apache/kafka:3.7.0
-        ports:
-          - 9092:9092
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
-        run: npm install -g pnpm@9.15.4
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Build all
         run: pnpm build
 
-      - name: Integration tests
-        run: pnpm test
+      - name: Setup Kafka (KRaft)
+        run: |
+          docker run -d --name kafka \
+            -p 9092:9092 \
+            -e KAFKA_CFG_NODE_ID=1 \
+            -e KAFKA_CFG_PROCESS_ROLES=broker,controller \
+            -e KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@localhost:9093 \
+            -e KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
+            -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
+            -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT \
+            -e KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER \
+            -e KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+            bitnami/kafka:3.7
+          sleep 15
+
+      - name: Start services
+        run: |
+          npx nx serve auth-service &
+          npx nx serve employee-service &
+          npx nx serve payroll-service &
+          npx nx serve payroll-processing-service &
+          npx nx serve payroll-projection-service &
+          npx nx serve notification-service &
+          npx nx serve email-service &
+          npx nx serve audit-service &
+          sleep 30
+          for port in 3001 3002 3003 3004 3005 3006 3007 3008; do
+            curl -sf "http://localhost:$port/health/live" > /dev/null && echo "port $port OK" || echo "port $port DOWN"
+          done
+
+      - name: Run E2E tests
+        run: pnpm test:e2e
+
+      - name: Run chaos tests
+        run: pnpm test:chaos
+
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-evidence
+          path: |
+            test/chaos/evidence/
+            test/e2e/

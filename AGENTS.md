@@ -177,6 +177,7 @@ apps/<service>/
 - **Prefer**: `shared-kernel/` for truly shared domain concepts
 - **Domain layer**: ZERO dependencies on NestJS or infrastructure
 - **Events**: always go through the outbox, never publish directly to Kafka
+- **Documentation**: ALL code must be thoroughly documented with JSDoc/inline comments in **English**. This includes classes, methods, interfaces, types, parameters, return values, and non-obvious logic. Comments are part of the codebase and must be maintained.
 - **Validation**: global `ValidationPipe` with `whitelist`, `forbidNonWhitelisted`, `transform`
 - **Testing**: tests written BEFORE production code
 

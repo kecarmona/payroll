@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/libs/auth-guards",
+    "types": ["node"],
+    "baseUrl": "../../",
+    "paths": {
+      "@payroll/contracts": ["dist/libs/contracts/src/index"],
+      "@payroll/event-bus": ["dist/libs/event-bus/src/index"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}
