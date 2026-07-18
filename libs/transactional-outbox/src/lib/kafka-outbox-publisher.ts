@@ -71,7 +71,7 @@ export class KafkaOutboxPublisher implements OutboxPublisher {
           typeof record.payload === 'object' &&
           record.payload !== null &&
           'companyId' in (record.payload as Record<string, unknown>)
-            ? ((record.payload as Record<string, unknown>).companyId as string)
+            ? ((record.payload as Record<string, unknown>)['companyId'] as string)
             : '';
         const envelope: EventEnvelope = {
           eventId: record.id,

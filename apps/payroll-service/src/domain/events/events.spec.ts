@@ -36,6 +36,7 @@ describe('PayrollJobCreatedEvent', () => {
       jobId: 'pj-123',
       companyId: 'comp-1',
       periodId: 'pp-123',
+      employeeIds: [],
       timestamp: '2026-07-14T12:00:00.000Z',
     });
 
@@ -49,6 +50,7 @@ describe('PayrollJobCreatedEvent', () => {
       jobId: 'pj-123',
       companyId: 'comp-1',
       periodId: 'pp-123',
+      employeeIds: [],
       timestamp: '2026-07-14T12:00:00.000Z',
     });
   });

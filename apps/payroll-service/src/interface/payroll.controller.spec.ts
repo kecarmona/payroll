@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtModule } from '@nestjs/jwt';
+import type { Request } from 'express';
 import { JwtAuthGuard, RolesGuard } from '@payroll/auth-guards';
 import { CreatePayrollPeriodHandler, CreatePayrollPeriodCommand } from '../application/create-payroll-period.command';
 import { CreatePayrollJobHandler, CreatePayrollJobCommand } from '../application/create-payroll-job.command';
@@ -156,7 +157,8 @@ describe('PayrollController', () => {
         periodId: 'period-1',
       });
 
-      const result = await controller.createJob(dto);
+      const mockRequest = { idempotencyInfo: { key: 'test-key', requestHash: 'hash' } } as unknown as Request;
+      const result = await controller.createJob(dto, mockRequest);
 
       expect(result).toEqual({ jobId: 'new-job-id', status: 'CREATED' });
       expect(mockCreateJobHandler.execute).toHaveBeenCalledTimes(1);
@@ -177,7 +179,8 @@ describe('PayrollController', () => {
       const dto = new CreatePayrollJobDto();
       Object.assign(dto, { companyId: 'company-1', periodId: 'non-existent' });
 
-      await expect(controller.createJob(dto)).rejects.toThrow(
+      const mockRequest = { idempotencyInfo: { key: 'test-key', requestHash: 'hash' } } as unknown as Request;
+      await expect(controller.createJob(dto, mockRequest)).rejects.toThrow(
         PayrollPeriodNotFoundError,
       );
     });

@@ -98,7 +98,7 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd mongosh --eval "db.adminCommand('ping')"
+          --health-cmd "mongosh --quiet --eval 'db.adminCommand(\"ping\")'"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -177,6 +177,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-evidence
-          path: |
+          path: |-
             test/chaos/evidence/
             test/e2e/

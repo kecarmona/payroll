@@ -1,6 +1,7 @@
 import { EventEnvelope } from '@payroll/contracts';
 import { ProjectionConsumerService } from './projection-consumer.service';
 import { PayrollJobHandler } from '../../application/handlers/payroll-job.handler';
+import { PayrollJobCompletedHandler } from '../../application/handlers/payroll-job-completed.handler';
 import { TransactionHandler } from '../../application/handlers/transaction.handler';
 import { PayslipHandler } from '../../application/handlers/payslip.handler';
 
@@ -22,16 +23,19 @@ function createEvent(overrides: Partial<EventEnvelope>): EventEnvelope {
 describe('ProjectionConsumerService', () => {
   let consumer: ProjectionConsumerService;
   let mockPayrollJobHandler: { handle: jest.Mock };
+  let mockPayrollJobCompletedHandler: { handle: jest.Mock };
   let mockTransactionHandler: { handle: jest.Mock };
   let mockPayslipHandler: { handle: jest.Mock };
 
   beforeEach(() => {
     mockPayrollJobHandler = { handle: jest.fn() };
+    mockPayrollJobCompletedHandler = { handle: jest.fn() };
     mockTransactionHandler = { handle: jest.fn() };
     mockPayslipHandler = { handle: jest.fn() };
 
     consumer = new ProjectionConsumerService(
       mockPayrollJobHandler as unknown as PayrollJobHandler,
+      mockPayrollJobCompletedHandler as unknown as PayrollJobCompletedHandler,
       mockTransactionHandler as unknown as TransactionHandler,
       mockPayslipHandler as unknown as PayslipHandler,
     );
