@@ -138,6 +138,7 @@ jobs:
 
       - name: Create PostgreSQL databases
         run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client > /dev/null 2>&1
           for db in payroll_auth payroll_employees payroll_payroll payroll_processing payroll_notifications payroll_emails payroll_audit; do
             psql -h localhost -U payroll -d postgres -c "CREATE DATABASE \"$db\";" 2>/dev/null || echo "Database $db already exists"
           done
