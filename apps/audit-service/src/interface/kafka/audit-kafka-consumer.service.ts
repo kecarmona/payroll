@@ -48,27 +48,44 @@ export class AuditKafkaConsumerService implements OnModuleInit, OnModuleDestroy 
   }
 
   async onModuleInit(): Promise<void> {
-    try {
-      await this.consumer.connect();
-      await this.consumer.subscribe({
-        topic: 'payroll.events',
-        fromBeginning: true,
-      });
+    const maxRetries = 10;
+    const baseDelayMs = 2_000;
 
-      await this.consumer.run({
-        eachMessage: async (payload: EachMessagePayload) =>
-          this.processMessage(payload),
-      });
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await this.consumer.connect();
+        await this.consumer.subscribe({
+          topic: 'payroll.events',
+          fromBeginning: true,
+        });
 
-      this.isRunning = true;
-      this.logger.log('Kafka consumer connected, subscribed to "payroll.events"');
-    } catch (error) {
-      this.logger.error(
-        `Failed to connect to Kafka: ${(error as Error).message}`,
-      );
-      this.logger.warn(
-        'Kafka consumer will retry on next application restart. Service continues without event processing.',
-      );
+        await this.consumer.run({
+          eachMessage: async (payload: EachMessagePayload) =>
+            this.processMessage(payload),
+        });
+
+        this.isRunning = true;
+        this.logger.log('Kafka consumer connected, subscribed to "payroll.events"');
+        return;
+      } catch (error) {
+        const message = (error as Error).message;
+        this.logger.warn(
+          `Failed to connect to Kafka (attempt ${attempt}/${maxRetries}): ${message}`,
+        );
+
+        if (attempt < maxRetries) {
+          const delay = baseDelayMs * Math.pow(2, attempt - 1);
+          this.logger.warn(`Retrying in ${delay}ms...`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        } else {
+          this.logger.error(
+            `Failed to connect to Kafka after ${maxRetries} attempts: ${message}`,
+          );
+          this.logger.warn(
+            'Kafka consumer will retry on next application restart. Service continues without event processing.',
+          );
+        }
+      }
     }
   }
 
@@ -95,7 +112,7 @@ export class AuditKafkaConsumerService implements OnModuleInit, OnModuleDestroy 
 
     try {
       await this.auditConsumer.handleAuditEvent(message);
-      this.logger.debug(
+      this.logger.log(
         `Processed audit event from ${topic}[${partition}]`,
       );
     } catch (error) {
