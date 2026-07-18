@@ -38,7 +38,7 @@
  * @module test/chaos/helpers/chaos-orchestrator
  */
 
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import { promisify } from 'util';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -417,16 +417,20 @@ export class ChaosOrchestrator extends E2eOrchestrator {
 
     const projectRoot = path.resolve(__dirname, '..', '..', '..');
     const logFile = `/tmp/${serviceName}.log`;
+    const logStream = fs.createWriteStream(logFile, { flags: 'a' });
 
     console.log(
       `[ChaosOrchestrator] Starting ${serviceName} (port ${port})...`,
     );
 
-    // Launch the service in the background
-    await execAsync(
-      `npx nx serve "${serviceName}" > "${logFile}" 2>&1 &`,
-      { cwd: projectRoot, timeout: 10_000 },
-    );
+    // Launch the service in the background with a detached process so it
+    // survives Jest worker cleanup when the test suite finishes.
+    const child = spawn('npx', ['nx', 'serve', serviceName], {
+      cwd: projectRoot,
+      stdio: ['ignore', logStream, logStream],
+      detached: true,
+    });
+    child.unref(); // Allow the parent to exit independently
 
     // Wait for the health endpoint to respond
     // NOTE: apiClient.healthCheck appends config.health.endpoint (/health/live)
