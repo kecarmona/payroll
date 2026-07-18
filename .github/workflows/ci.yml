@@ -83,7 +83,7 @@ jobs:
         image: postgres:16
         env:
           POSTGRES_USER: payroll
-          POSTGRES_PASSWORD: payroll_secret
+          POSTGRES_PASSWORD: payroll
           POSTGRES_DB: payroll
         ports:
           - 5432:5432
@@ -135,6 +135,14 @@ jobs:
 
       - name: Build all
         run: pnpm build
+
+      - name: Create PostgreSQL databases
+        run: |
+          for db in payroll_auth payroll_employees payroll_payroll payroll_processing payroll_notifications payroll_emails payroll_audit; do
+            psql -h localhost -U payroll -d postgres -c "CREATE DATABASE \"$db\";" 2>/dev/null || echo "Database $db already exists"
+          done
+        env:
+          PGPASSWORD: payroll
 
       - name: Setup Kafka (KRaft)
         run: |
