@@ -417,7 +417,6 @@ export class ChaosOrchestrator extends E2eOrchestrator {
 
     const projectRoot = path.resolve(__dirname, '..', '..', '..');
     const logFile = `/tmp/${serviceName}.log`;
-    const logStream = fs.createWriteStream(logFile, { flags: 'a' });
 
     console.log(
       `[ChaosOrchestrator] Starting ${serviceName} (port ${port})...`,
@@ -425,9 +424,10 @@ export class ChaosOrchestrator extends E2eOrchestrator {
 
     // Launch the service in the background with a detached process so it
     // survives Jest worker cleanup when the test suite finishes.
+    const logFd = fs.openSync(logFile, 'a');
     const child = spawn('npx', ['nx', 'serve', serviceName], {
       cwd: projectRoot,
-      stdio: ['ignore', logStream, logStream],
+      stdio: ['ignore', logFd, logFd],
       detached: true,
     });
     child.unref(); // Allow the parent to exit independently
