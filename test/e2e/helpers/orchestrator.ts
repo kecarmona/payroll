@@ -132,7 +132,12 @@ export class E2eOrchestrator {
 
     if (failures.length > 0) {
       const messages = failures
-        .map((f) => f.reason?.message ?? 'Unknown error')
+        .map((f) => {
+          const msg = f.reason?.message ?? 'Unknown error';
+          const stack = f.reason?.stack ? f.reason.stack.split('\n')[0] : '';
+          console.error(`[HealthCheck] ${f.reason?.name ?? 'Error'}: ${msg} ${stack}`);
+          return msg;
+        })
         .join('; ');
       throw new Error(`Health check failed: ${messages}`);
     }
